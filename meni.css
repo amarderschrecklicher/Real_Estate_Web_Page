@@ -4,6 +4,7 @@ html{
 ul{
     list-style: none;
     text-align: center;
+    
 }
 li{
     display: inline;
@@ -19,3 +20,8 @@ a:hover{
     color: #ff9900;
     font-size: xx-large; 
 } 
+.navbar{
+    position: fixed;
+    width: 100%;
+    top:0;
+}
