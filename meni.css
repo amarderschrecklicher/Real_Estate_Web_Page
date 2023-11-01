@@ -1,0 +1,21 @@
+html{
+    background-color: #fdf1d3;
+}
+ul{
+    list-style: none;
+    text-align: center;
+}
+li{
+    display: inline;
+    text-decoration: none;
+    text-align: center;
+    padding: 2%;
+}
+a{
+    text-decoration: none;
+    text-align: center;
+}
+a:hover{
+    color: #ff9900;
+    font-size: xx-large; 
+} 
