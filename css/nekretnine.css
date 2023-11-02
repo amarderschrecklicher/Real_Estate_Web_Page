@@ -4,23 +4,48 @@ html{
  
  .grid-container {
     display: grid;
-    grid-template-columns: auto auto auto auto;
-    gap: 20px;
-    padding: 10px;
-    height: 200px;
-    text-align:center;
-    margin-top: 2%;
+    grid-template-columns: 100%;
+    padding: 3.75%;
+    grid-column-gap: 0;
+    grid-row-gap: 20px;
 
   }
-  
   .grid-container > div {
     background-color: rgba(255, 255, 255, 0.8);
     border: 1px solid black;
     text-align: center;
-    font-size: 30px;
-    padding-top: 5%;
-    margin-bottom: 5%;
-  } 
+    padding: 10px;
+
+  }
+  @media only screen and (min-width: 601px) {
+    .grid-container{
+        grid-template-columns: 47.5% 47.5%;
+        grid-column-gap: 5%;
+        grid-row-gap: 40px;
+    }
+    .grid-container >div{
+        padding: 20px;
+    }
+  }
+  @media only screen and (min-width: 901px) {
+    .grid-container{
+        grid-template-columns: 30% 30% 30%;
+        grid-row-gap: 50px;
+    }
+    .grid-container >div{
+        padding: 30px;
+    }
+  }
+  @media only screen and (min-width: 1201px) {
+    .grid-container{
+        grid-template-columns: 21% 21% 21% 21%;
+        grid-row-gap: 1000px;
+    }
+    .grid-container >div{
+        padding: 40px;
+    }
+  }
+
   ul{
     list-style: none;
     text-align: center;
@@ -47,18 +72,37 @@ a:hover{
     margin-bottom: 25%;
 }
 img{
-    height: 75%;
+    height: 48%;
     width: 90%;
 }
 h3{
     margin-top: 5%;
+    font-size: 3.2vw;
 }
 #kuca-con >div{ 
-    background-color:  #d6f5dd;
+    background-color:  powderblue;
 }
 #stan-con > div{
-    background-color:  #f5e1d6;
+    background-color:  white;
 }
 #pp-con > div{
-    background-color:  #d6eff5;
+    background-color:  green;
+}
+.lijevo{
+    text-align: left;
+    margin-left: 5%;
+}
+.desno{
+    text-align: right;
+    margin-right: 5%;
+}
+iframe{
+    border: none;
+    width: 100%;
+    height: 40px;
+}
+header{
+    position: fixed;
+    top: 0;
+    width: 100%
 }
