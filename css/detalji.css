@@ -9,8 +9,8 @@ iframe{
 header{
     position: fixed;
     top: 0;
-    width: 100%
-}
+    width: 100%;
+    }
 .center{
     margin-left: auto;
     margin-right: auto;
@@ -32,6 +32,8 @@ input{
 }
 h3{
     margin-left: 8%;
+    margin-top: 50px;
+
 }
 table{
     width: 80%;
