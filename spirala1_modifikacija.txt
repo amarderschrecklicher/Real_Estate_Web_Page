@@ -1,0 +1,14 @@
+
+U profil.css datoteci sam dodao:
+
+@media screen and (min-width:500px){
+    .container{
+        float: left;
+
+    }
+    img{
+        float:left;
+    }
+}
+
+Što će pomjeriti korisničke podatke u desno od slike za ekrana širine >=500px.
