@@ -8,9 +8,9 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
     let string = ""
 
     for(let nekretnina of nekretnine){
-     string += "<div> <img src= '/wt23p19006/images/apartments.jpg' alt='Appartment'> <br> <p class='lijevo'><strong>Naziv:</strong>"`${nekretnina.ime}`+"</p>" +
-     "<p class='lijevo'><strong>Kvadratura:</strong>"`${nekretnina.kvadratura}`+"</p>" +
-     "<p class='desno'><strong>Cijena:</strong>" `${nekretnina.cijena}`+"</p> + <button>Detalji</button></div>"
+     string += "<div> <img src= '/wt23p19006/images/apartments.jpg' alt='Appartment'> <br> <p class='lijevo'><strong>Naziv:</strong>"+ nekretnina.ime+"</p>" +
+     "<p class='lijevo'><strong>Kvadratura:</strong>"+ nekretnina.kvadratura +"</p>" +
+     "<p class='desno'><strong>Cijena:</strong>"+nekretnina.cijena +"</p> + <button>Detalji</button></div>"
     }
 
         element.innerHTML += string
