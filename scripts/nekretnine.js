@@ -3,17 +3,19 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
    let nekretnine = instancaModula.filtrirajNekretnine({ tip_nekretnine: tip_nekretnine });
     // iscrtavanje elemenata u divReferenca element
 
-    let element = divReferenca.getElementById(`${tip_nekretnine}"-con"`)
-
     let string = ""
 
     for(let nekretnina of nekretnine){
-     string += "<div> <img src= '/wt23p19006/images/apartments.jpg' alt='Appartment'> <br> <p class='lijevo'><strong>Naziv:</strong>"+ nekretnina.ime+"</p>" +
+     string += "<div> <img src= '/wt23p19006/images/apartments.jpg' alt='Appartment'> <br> <p class='lijevo'><strong>Naziv:</strong>"+ nekretnina.naziv+"</p>" +
      "<p class='lijevo'><strong>Kvadratura:</strong>"+ nekretnina.kvadratura +"</p>" +
-     "<p class='desno'><strong>Cijena:</strong>"+nekretnina.cijena +"</p> + <button>Detalji</button></div>"
+     "<p class='desno'><strong>Cijena:</strong>"+nekretnina.cijena +"</p><button>Detalji</button></div>"
     }
 
-        element.innerHTML += string
+    if(tip_nekretnine == "Poslovni prostor")
+    divReferenca.querySelector("#Poslovni_prostor").innerHTML = string
+    else
+    divReferenca.querySelector(`#${tip_nekretnine}`).innerHTML = string
+    
 }
 
 const divStan = document.getElementById("stan");
@@ -54,8 +56,28 @@ const listaNekretnina = [{
     upiti: [{
         korisnik_id: 2,
         tekst_upita: "Integer tincidunt."
-    }
+    },
+    
     ]
+},{
+    id: 3,
+    tip_nekretnine: "Kuća",
+    naziv: "Mala Kuća",
+    kvadratura: 88,
+    cijena: 232000,
+    tip_grijanja: "plin",
+    lokacija: "Novo Sarajevo",
+    godina_izgradnje: 2019,
+    datum_objave: "01.10.2023.",
+    opis: "Sociis natoque penatibus.",
+    upiti: [{
+        korisnik_id: 1,
+        tekst_upita: "Nullam eu pede mollis pretium."
+    },
+    {
+        korisnik_id: 2,
+        tekst_upita: "Phasellus viverra nulla."
+    }]
 }]
 
 const listaKorisnika = [{
