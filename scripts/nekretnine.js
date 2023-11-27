@@ -4,18 +4,18 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
     // iscrtavanje elemenata u divReferenca element
 
     let string = ""
+    let container = tip_nekretnine
+    if(container=="Poslovni prostor")
+    container="Poslovni_prostor"
 
     for(let nekretnina of nekretnine){
-     string += "<div> <img src= '/wt23p19006/images/apartments.jpg' alt='Appartment'> <br> <p class='lijevo'><strong>Naziv:</strong>"+ nekretnina.naziv+"</p>" +
-     "<p class='lijevo'><strong>Kvadratura:</strong>"+ nekretnina.kvadratura +"</p>" +
-     "<p class='desno'><strong>Cijena:</strong>"+nekretnina.cijena +"</p><button>Detalji</button></div>"
+     string += "<h3>"+tip_nekretnine+"</h3><div id='"+container+"' class='grid-container'>"+
+     " <div> <img src= '/wt23p19006/images/apartments.jpg' alt='Appartment'> <br> <p class='lijevo'><strong>Naziv:</strong> "+ nekretnina.naziv+"</p>" +
+     "<p class='lijevo'><strong>Kvadratura:</strong> "+ nekretnina.kvadratura +" m2</p>" +
+     "<p class='desno'><strong>Cijena:</strong> "+nekretnina.cijena +" KM</p><button>Detalji</button></div></div>"
     }
 
-    if(tip_nekretnine == "Poslovni prostor")
-    divReferenca.querySelector("#Poslovni_prostor").innerHTML = string
-    else
-    divReferenca.querySelector(`#${tip_nekretnine}`).innerHTML = string
-    
+    divReferenca.innerHTML = string  
 }
 
 const divStan = document.getElementById("stan");
