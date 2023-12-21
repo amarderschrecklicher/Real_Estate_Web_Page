@@ -1,4 +1,0 @@
-https://jigsaw.w3.org/css-validator/
-https://validator.w3.org/
-
-Broj grešaka prije validacije: 3 (od kojih 7 puta ista greška) za html + 2 css = 5 gresaka
