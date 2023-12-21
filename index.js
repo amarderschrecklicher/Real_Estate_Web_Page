@@ -21,29 +21,29 @@ app.use(session({
 const filePath = path.join(__dirname, 'data', 'korisnici.json');
 
 app.post('/login',function(req,res){
-    const { username, password } = req.body;
-    fs.readFile(filePath, 'utf8', (err, data) => {
-        if (err) {
-          console.error(err);
-          return;
-        }   
-        try {
+  const { username, password } = req.body;
+  fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }   
+      try {
+        bcrypt.hash(password, 10, function(err, hash) {
+          const korisnici = JSON.parse(data);
+          var a = korisnici.find(korisnik => korisnik.username == username && korisnik.password == hash)
+          if(a){
+              req.session.username = username;
+              res.status(200).json({poruka:"Uspješna prijava"})
+          }
+          else {
+              res.status(401).json({poruka:"Neuspješna prijava"})
+          }
+          });  
 
-            const korisnici = JSON.parse(data);
-            var a = korisnici.find(korisnik => korisnik.username == username && korisnik.password == password )
-            if(a){
-                req.session.username = username;
-                res.status(200).json({poruka:"Uspješna prijava"})     
-            }
-            else {
-                res.status(401).json({greska:"Neuspješna prijava"})
-            }
-
-
-        } catch (error) {
-          console.error('Error parsing JSON data:', error);
-        }
-      });
+      } catch (error) {
+        console.error('Error parsing JSON data:', error);
+      }
+    });
 });
 
 app.post('/logout',function(req,res){
