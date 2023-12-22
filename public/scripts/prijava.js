@@ -1,18 +1,19 @@
-const ajax = PoziviAjax();
 const username = document.getElementById("username");
 const password = document.getElementById("password");
 const button = document.getElementById("loginButton");
 const message = document.getElementById("login");
 
+function callLogin(){
+    PoziviAjax.postLogin(username.value, password.value, login)
+}
 button.addEventListener('click',callLogin);
 
-function callLogin(){
-ajax.impl_postLogin(username.nodeValue, password.nodeValue, login)
-}
-
 function login(error,data){
-    if(error) throw error;
-    message.innerHTML = data;
+    if(error) {
+        message.innerHTML = JSON.parse(error).poruka;
+        throw error;
+    }
+    window.location.href = 'http://localhost:3000/nekretnine.html'
 }
 
 

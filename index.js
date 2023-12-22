@@ -26,19 +26,20 @@ app.use(session({
 const filePath = path.join(__dirname, 'data', 'korisnici.json');
 const filePath2 = path.join(__dirname, 'data', 'nekretnine.json');
 
-app.post('/login',function(req,res){
+app.post('/login', function(req,res){
   const { username, password } = req.body;
-  fs.readFile(filePath, 'utf8', (err, data) => {
+  fs.readFile(filePath, 'utf8',async (err, data) => {
       if (err) {
         console.error(err);
         return;
       }   
       try {
-        const korisnici = JSON.parse(data);
-        var a = korisnici.find(korisnik => korisnik.username == username && 
-          bcrypt.compare(password,korisnik.password))
-
-          if(a){
+        const korisnici = JSON.parse(data);        
+        var a = korisnici.find(korisnik => korisnik.username == username)
+        var validPassword = false
+        if(a)
+        validPassword = await bcrypt.compare(password,a.password);
+          if(validPassword){
               req.session.username = username;
               res.status(200).json({poruka:"Uspješna prijava"})
           }

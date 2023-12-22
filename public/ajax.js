@@ -15,7 +15,7 @@ const PoziviAjax = (() => {
         if (ajax.readyState == 4 && ajax.status == 200)
            fnCallback(null,JSON.parse(ajax.responseText));
         else if (ajax.readyState == 4)
-            fnCallback(ajax.status,null);
+            fnCallback(ajax.responseText,null);
         };
 
         ajax.open('GET','/korisnik');
@@ -77,7 +77,7 @@ const PoziviAjax = (() => {
         if (ajax.readyState == 4 && ajax.status == 200)
            fnCallback(null,JSON.parse(ajax.responseText));
         else if (ajax.readyState == 4)
-            fnCallback(ajax.status,null);
+            fnCallback(ajax.responseText,null);
         };
 
         ajax.open('POST','/login');
@@ -95,7 +95,7 @@ const PoziviAjax = (() => {
             fnCallback(ajax.status,null);
         };
 
-        ajax.open('POST','/');
+        ajax.open('POST','/logout');
         ajax.send();
     }
 
