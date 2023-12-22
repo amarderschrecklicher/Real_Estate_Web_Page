@@ -41,7 +41,7 @@ app.post('/login',function(req,res){
           });  
 
       } catch (error) {
-        console.error('Error parsing JSON data:', error);
+        console.error('Error parsing JSON data: ', error);
       }
     });
 });
