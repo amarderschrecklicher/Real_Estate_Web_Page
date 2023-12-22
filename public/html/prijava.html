@@ -10,15 +10,14 @@
     <header><iframe src="meni.html"></iframe>
     </header>
     <div class="container">
-        <form action="http://localhost:3000/login" method="post">  
         <label for="username"><b>Username</b></label>
         <input id="username" type="text" placeholder="Enter Username" name="username" required>  
         <label for="password"><b>Password</b></label>
         <input id="password" type="password" placeholder="Enter Password" name="password" required>
-        <button type="submit">Login</button>
+        <button id="loginButton" type="submit">Login</button>
         <p id ="login"></p> 
-        </form>
       </div>
 </body>
-<script src="../index.js" ></script>
+<script src="/ajax.js" ></script>
+<script src="../scripts/prijava.js" ></script>
 </html>
