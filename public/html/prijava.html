@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/prijava.css">
+    <title>Document</title>
+</head>
+<body>
+    <header><iframe src="meni.html"></iframe>
+    </header>
+    <div class="container">
+        <form action="http://localhost:3000/login" method="post">  
+        <label for="username"><b>Username</b></label>
+        <input id="username" type="text" placeholder="Enter Username" name="username" required>  
+        <label for="password"><b>Password</b></label>
+        <input id="password" type="password" placeholder="Enter Password" name="password" required>
+        <button type="submit">Login</button>
+        <p id ="login"></p> 
+        </form>
+      </div>
+</body>
+<script src="../index.js" ></script>
+</html>

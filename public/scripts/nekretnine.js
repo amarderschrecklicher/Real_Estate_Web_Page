@@ -10,7 +10,7 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
 
     for(let nekretnina of nekretnine){
      string += "<h3>"+tip_nekretnine+"</h3><div id='"+container+"' class='grid-container'>"+
-     " <div> <img src= 'images/apartments.jpg' alt='Appartment'> <br> <p class='lijevo'><strong>Naziv:</strong> "+ nekretnina.naziv+"</p>" +
+     " <div> <img src= '../images/apartments.jpg' alt='Appartment'> <br> <p class='lijevo'><strong>Naziv:</strong> "+ nekretnina.naziv+"</p>" +
      "<p class='lijevo'><strong>Kvadratura:</strong> "+ nekretnina.kvadratura +" m2</p>" +
      "<p class='desno'><strong>Cijena:</strong> "+nekretnina.cijena +" KM</p><button>Detalji</button></div></div>"
     }

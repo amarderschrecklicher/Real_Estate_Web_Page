@@ -11,6 +11,11 @@ app.listen(3000);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.get('/:pageName.html', (req, res) => {
+  const pageName = req.params.pageName;
+  res.sendFile(path.join(__dirname, 'public', 'html', `${pageName}.html`));
+});
+
 
 app.use(session({
     secret: 'code',
