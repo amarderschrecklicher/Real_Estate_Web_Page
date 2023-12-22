@@ -71,7 +71,7 @@ app.get('/korisnik',function(req,res){
       try {
         const korisnici = JSON.parse(data);
         var a = korisnici.find(korisnik => korisnik.username == req.session.username)
-        res.status(200).json({korisnik:a})
+        res.status(200).json(a)
       } catch (error) {
         console.error('Error parsing JSON data: ', error);
       }
@@ -175,4 +175,22 @@ app.put('/korisnik',function(req,res){
   else{
     res.status(401).json({greska:"Neautorizovan pristup"})
   }
+});
+
+
+app.get('/nekretnine',function(req,res){
+    
+    fs.readFile(filePath2, 'utf8', (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }   
+      try {
+        const nekretnine = JSON.parse(data);
+        res.status(200).json(nekretnine)
+      } catch (error) {
+        console.error('Error parsing JSON data: ', error);
+      }
+    });
+    
 });
