@@ -31,7 +31,7 @@ app.post('/login',function(req,res){
         const korisnici = JSON.parse(data);
         var a = korisnici.find(korisnik => korisnik.username == username && 
           bcrypt.compare(password,korisnik.password))
-          
+
           if(a){
               req.session.username = username;
               res.status(200).json({poruka:"Uspješna prijava"})
@@ -45,14 +45,39 @@ app.post('/login',function(req,res){
     });
 });
 
-app.post('/logout',function(req,res){
+app.post('/logout', (req, res) => {
+  if (req.session.username) {
+      req.session.destroy(err => {
+          if (!err) {
+            res.status(200).json({ poruka: 'Uspješno ste se odjavili' });
+          }
+      });
+  } else {
+      res.status(401).json({ greska: 'Neautorizovan pristup' });
+  }
+});
+
+
+app.get('/korisnik',function(req,res){
     
-      if (req.session.username)
-      {
-        req.session.username = null
-        res.status(200).json({poruka:"Uspješno ste se odjavili"})
+  if (req.session.username)
+  {
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }   
+      try {
+        const korisnici = JSON.parse(data);
+        var a = korisnici.find(korisnik => korisnik.username == req.session.username)
+        res.status(200).json({korisnik:a})
+      } catch (error) {
+        console.error('Error parsing JSON data: ', error);
       }
-      else{
-        res.status(401).json({greska:"Neautorizovan pristup"})
-      }
+    });
+    
+  }
+  else{
+    res.status(401).json({greska:"Neautorizovan pristup"})
+  }
 });
