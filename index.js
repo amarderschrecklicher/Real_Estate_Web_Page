@@ -129,3 +129,50 @@ app.post('/upit',function(req,res){
     res.status(401).json({greska:"Neautorizovan pristup"})
   }
 });
+
+app.put('/korisnik',function(req,res){
+    
+  if (req.session.username)
+  {
+    const { ime, prezime, username, password } = req.body;
+    fs.readFile(filePath, 'utf8', (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }   
+      try {
+        const korisnici = JSON.parse(data);
+        var a = korisnici.find(korisnik => korisnik.username == req.session.username)
+        if(ime)
+          a.ime = ime
+        if(prezime)
+          a.prezime = prezime
+        if(username){
+          a.username = username
+          req.session.username = username
+        }
+        if(password){
+          bcrypt.hash(password, 10, function(err, hash) {
+            a.password = hash
+            });          
+        }
+
+          fs.writeFile(filePath,JSON.stringify(korisnici,null,2),(err)=>{
+            if(err){
+              res.status(200).json("Error writting to file: ", err);
+            }
+            else{
+              res.status(200).json({ poruka: 'Podaci su uspješno ažurirani' });
+            }
+          });       
+
+      } catch (error) {
+        console.error('Error parsing JSON data: ', error);
+      }
+    });
+    
+  }
+  else{
+    res.status(401).json({greska:"Neautorizovan pristup"})
+  }
+});
