@@ -28,9 +28,10 @@ app.post('/login',function(req,res){
         return;
       }   
       try {
-        bcrypt.hash(password, 10, function(err, hash) {
-          const korisnici = JSON.parse(data);
-          var a = korisnici.find(korisnik => korisnik.username == username && korisnik.password == hash)
+        const korisnici = JSON.parse(data);
+        var a = korisnici.find(korisnik => korisnik.username == username && 
+          bcrypt.compare(password,korisnik.password))
+          
           if(a){
               req.session.username = username;
               res.status(200).json({poruka:"Uspješna prijava"})
@@ -38,8 +39,6 @@ app.post('/login',function(req,res){
           else {
               res.status(401).json({poruka:"Neuspješna prijava"})
           }
-          });  
-
       } catch (error) {
         console.error('Error parsing JSON data: ', error);
       }
