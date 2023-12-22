@@ -13,6 +13,7 @@ function login(error,data){
         message.innerHTML = JSON.parse(error).poruka;
         throw error;
     }
+    localStorage.setItem('updateHeader', 'true');
     window.location.href = 'http://localhost:3000/nekretnine.html'
 }
 

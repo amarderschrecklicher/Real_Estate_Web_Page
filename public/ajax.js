@@ -66,7 +66,7 @@ const PoziviAjax = (() => {
             fnCallback(ajax.status,null);
         };
 
-        ajax.open('GET','/korisnik');
+        ajax.open('GET','/nekretnine');
         ajax.send();
     }
 
