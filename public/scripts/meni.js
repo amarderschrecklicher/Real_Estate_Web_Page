@@ -13,8 +13,8 @@ function logout(error,data){
         prijava.innerHTML="Odjava"
     else
         prijava.innerHTML="Prijava"
-
 }
+
 document.addEventListener('DOMContentLoaded', function() {
     const shouldUpdate = localStorage.getItem('updateHeader');
     if (shouldUpdate === 'true') {

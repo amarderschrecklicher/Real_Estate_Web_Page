@@ -6,7 +6,6 @@ const message = document.getElementById("login");
 function callLogin(){
     PoziviAjax.postLogin(username.value, password.value, login)
 }
-button.addEventListener('click',callLogin);
 
 function login(error,data){
     if(error) {
