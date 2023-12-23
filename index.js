@@ -200,3 +200,17 @@ app.get('/nekretnine',function(req,res){
     });
     
 });
+
+app.post('/marketing/nekretnine',function(req,res){
+    
+
+});
+
+app.post('/marketing/nekretnina/:id',function(req,res){
+    
+
+});
+app.post('/marketing/osvjezi',function(req,res){
+    
+
+});
