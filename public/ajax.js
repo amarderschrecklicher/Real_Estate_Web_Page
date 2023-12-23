@@ -35,8 +35,11 @@ const PoziviAjax = (() => {
 
         ajax.open('PUT','/korisnik');
         ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        if(noviPodaci.password)
         ajax.send("ime=" + noviPodaci.ime + "&prezime=" + noviPodaci.prezime + "&username=" + noviPodaci.username 
         + "&password=" + noviPodaci.password);
+        else 
+        ajax.send("ime=" + noviPodaci.ime + "&prezime=" + noviPodaci.prezime + "&username=" + noviPodaci.username);
     }
 
     // dodaje novi upit za trenutno loginovanog korisnika
@@ -63,7 +66,7 @@ const PoziviAjax = (() => {
         if (ajax.readyState == 4 && ajax.status == 200)
            fnCallback(null,JSON.parse(ajax.responseText));
         else if (ajax.readyState == 4)
-            fnCallback(ajax.status,null);
+            fnCallback(ajax.responseText,null);
         };
 
         ajax.open('GET','/nekretnine');

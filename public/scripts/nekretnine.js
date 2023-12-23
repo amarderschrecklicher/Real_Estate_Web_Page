@@ -22,6 +22,26 @@ const divStan = document.getElementById("stan");
 const divKuca = document.getElementById("kuca");
 const divPp = document.getElementById("pp");
 
+PoziviAjax.getNekretnine(fillNekretnine)
+
+
+function fillNekretnine(error,data){
+
+if(error) throw error
+
+//instanciranje modula
+let nekretnine = SpisakNekretnina();
+nekretnine.init(data,null);
+
+//pozivanje funkcije
+spojiNekretnine(divStan, nekretnine, "Stan");
+spojiNekretnine(divKuca, nekretnine, "Kuća");
+spojiNekretnine(divPp, nekretnine, "Poslovni prostor");
+
+}
+
+
+/*
 const listaNekretnina = [{
     id: 1,
     tip_nekretnine: "Stan",
@@ -92,12 +112,4 @@ const listaKorisnika = [{
     prezime: "Nekic2",
     username: "username2",
 }]
-
-//instanciranje modula
-let nekretnine = SpisakNekretnina();
-nekretnine.init(listaNekretnina, listaKorisnika);
-
-//pozivanje funkcije
-spojiNekretnine(divStan, nekretnine, "Stan");
-spojiNekretnine(divKuca, nekretnine, "Kuća");
-spojiNekretnine(divPp, nekretnine, "Poslovni prostor");
+*/
