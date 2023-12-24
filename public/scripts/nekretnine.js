@@ -21,9 +21,18 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
 const divStan = document.getElementById("stan");
 const divKuca = document.getElementById("kuca");
 const divPp = document.getElementById("pp");
+const min_cijena = document.getElementById("min_cijena")
+const max_cijena = document.getElementById("max_cijena")
+const min_kvadrati = document.getElementById("min_kvadrati")
+const max_kvadrati = document.getElementById("max_kvadrati")
+var filter = false
 
 PoziviAjax.getNekretnine(fillNekretnine)
 
+function filterNekretnine(){
+    filter = true
+    PoziviAjax.getNekretnine(fillNekretnine)
+}
 
 function fillNekretnine(error,data){
 
@@ -32,6 +41,18 @@ if(error) throw error
 //instanciranje modula
 let nekretnine = SpisakNekretnina();
 nekretnine.init(data,null);
+
+if(filter){
+    console.log(min_cijena.value)
+    const kriterij = {
+        max_cijena:max_cijena.value,
+        min_cijena:min_cijena.value,
+        max_kvadratura:max_kvadrati.value,
+        min_kvadratura:min_kvadrati.value
+    }
+    filter = false
+    nekretnine.filtrirajNekretnine(kriterij)
+}
 
 //pozivanje funkcije
 spojiNekretnine(divStan, nekretnine, "Stan");
