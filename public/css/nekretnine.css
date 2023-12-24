@@ -104,5 +104,13 @@ form.filters input[type=text] {
 form.filters label{
     padding-right: 35px;
     padding-left: 1%;
+    background-color: none;
+}
+
+span{
+    display: inline-block; /* or 'inline' depending on your styling needs */
+    margin-left: 5px; /* Adjust the spacing between paragraph and label */
+    background-color: #ccc; /* Sample background color for the label */
+    padding: 3px 5px; /* Sample padding for the label */
 }
   

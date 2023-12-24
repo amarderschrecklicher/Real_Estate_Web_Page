@@ -8,12 +8,16 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
     if(container=="Poslovni prostor")
     container="Poslovni_prostor"
 
+    string += "<h3>"+tip_nekretnine+"</h3><div id='"+ container +"' class='grid-container'>"
     for(let nekretnina of nekretnine){
-     string += "<h3>"+tip_nekretnine+"</h3><div id='"+container+"' class='grid-container'>"+
-     " <div> <img src= '../images/apartments.jpg' alt='Appartment'> <br> <p class='lijevo'><strong>Naziv:</strong> "+ nekretnina.naziv+"</p>" +
+     string += " <div id='kartica-"+nekretnina.id+"'> <img src= '../images/apartments.jpg' alt='Appartment'> <br> <p class='lijevo'><strong>Naziv:</strong> "+ nekretnina.naziv +"</p>" +
      "<p class='lijevo'><strong>Kvadratura:</strong> "+ nekretnina.kvadratura +" m2</p>" +
-     "<p class='desno'><strong>Cijena:</strong> "+nekretnina.cijena +" KM</p><button>Detalji</button></div></div>"
+     "<p class='desno'><strong>Cijena:</strong> "+ nekretnina.cijena +" KM</p><button id='detalji-"+nekretnina.id+"'onclick='povecajKarticu("+nekretnina.id+")'>Detalji</button>" +
+     "<div id='pretrage-"+nekretnina.id+"'><p class='lijevo'><strong>Pretrage: </strong><span id='br_pretraga' class='label'>"+
+     "32</span></p></div><div id='klikovi-"+nekretnina.id+"'>"+
+     "<p class='lijevo'><strong>Klikovi: </strong><span id='br_klikova' class='label'>23</span></p></div></div>"
     }
+    string +="</div>"
 
     divReferenca.innerHTML = string  
 }
@@ -25,6 +29,7 @@ const min_cijena = document.getElementById("min_cijena")
 const max_cijena = document.getElementById("max_cijena")
 const min_kvadrati = document.getElementById("min_kvadrati")
 const max_kvadrati = document.getElementById("max_kvadrati")
+const detalji = document.getElementById("detalji")
 var filter = false
 
 PoziviAjax.getNekretnine(fillNekretnine)
@@ -61,76 +66,17 @@ spojiNekretnine(divPp, nekretnine, "Poslovni prostor");
 
 }
 
+var povecana_kartica = 0
 
-/*
-const listaNekretnina = [{
-    id: 1,
-    tip_nekretnine: "Stan",
-    naziv: "Useljiv stan Sarajevo",
-    kvadratura: 58,
-    cijena: 232000,
-    tip_grijanja: "plin",
-    lokacija: "Novo Sarajevo",
-    godina_izgradnje: 2019,
-    datum_objave: "01.10.2023.",
-    opis: "Sociis natoque penatibus.",
-    upiti: [{
-        korisnik_id: 1,
-        tekst_upita: "Nullam eu pede mollis pretium."
-    },
-    {
-        korisnik_id: 2,
-        tekst_upita: "Phasellus viverra nulla."
-    }]
-},
-{
-    id: 2,
-    tip_nekretnine: "Poslovni prostor",
-    naziv: "Mali poslovni prostor",
-    kvadratura: 20,
-    cijena: 70000,
-    tip_grijanja: "struja",
-    lokacija: "Centar",
-    godina_izgradnje: 2005,
-    datum_objave: "20.08.2023.",
-    opis: "Magnis dis parturient montes.",
-    upiti: [{
-        korisnik_id: 2,
-        tekst_upita: "Integer tincidunt."
-    },
-    
-    ]
-},{
-    id: 3,
-    tip_nekretnine: "Kuća",
-    naziv: "Mala Kuća",
-    kvadratura: 88,
-    cijena: 232000,
-    tip_grijanja: "plin",
-    lokacija: "Novo Sarajevo",
-    godina_izgradnje: 2019,
-    datum_objave: "01.10.2023.",
-    opis: "Sociis natoque penatibus.",
-    upiti: [{
-        korisnik_id: 1,
-        tekst_upita: "Nullam eu pede mollis pretium."
-    },
-    {
-        korisnik_id: 2,
-        tekst_upita: "Phasellus viverra nulla."
-    }]
-}]
+function povecajKarticu(id){
+    var kartica = document
 
-const listaKorisnika = [{
-    id: 1,
-    ime: "Neko",
-    prezime: "Nekic",
-    username: "username1",
-},
-{
-    id: 2,
-    ime: "Neko2",
-    prezime: "Nekic2",
-    username: "username2",
-}]
-*/
+    if(povecana_kartica!=0){
+        kartica = document.getElementById("kartica-" + povecana_kartica)
+        kartica.style.width = ""
+    }
+
+    kartica = document.getElementById("kartica-" + id)
+    kartica.style.width = "500px"
+    povecana_kartica = id
+}
