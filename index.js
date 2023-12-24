@@ -25,6 +25,7 @@ app.use(session({
 
 const filePath = path.join(__dirname, 'data', 'korisnici.json');
 const filePath2 = path.join(__dirname, 'data', 'nekretnine.json');
+const filePath3 = path.join(__dirname, 'data', 'marketing.json');
 
 app.post('/login', function(req,res){
   const { username, password } = req.body;
@@ -202,11 +203,66 @@ app.get('/nekretnine',function(req,res){
 });
 
 app.post('/marketing/nekretnine',function(req,res){
-    
+    if(req.session.username){
 
+      const {nizNekretnina} = req.body;
+
+      fs.readFile(filePath3, 'utf8', (err, data) => {
+        if (err) {
+          console.error(err);
+          return;
+        }   
+        try {
+          const marketing = JSON.parse(data)
+
+          const user_marketing =  marketing.find(x => x.username == req.session.username).marketing
+          
+          for(id in nizNekretnina){
+              const nekretnina = user_marketing.find(x => x.nekretnina_id == id)
+              if(nekretnina)
+                nekretnina.pretrage+=1           
+          }
+          
+          fs.writeFile(filePath3,JSON.stringify(marketing,null,2),(err)=>{
+          });       
+
+        } catch (error) {
+          console.error('Error parsing JSON data: ', error);
+        }
+      });
+
+  }
 });
 
 app.post('/marketing/nekretnina/:id',function(req,res){
+  if(req.session.username){
+
+    const id = req.params.id;
+
+    fs.readFile(filePath3, 'utf8', (err, data) => {
+      if (err) {
+        console.error(err);
+        return;
+      }   
+      try {
+        const marketing = JSON.parse(data)
+
+        const user_marketing =  marketing.find(x => x.username == req.session.username).marketing
+        
+        const nekretnina = user_marketing.find(x => x.nekretnina_id == id)
+
+        if(nekretnina)
+          nekretnina.klikovi+=1           
+        
+        fs.writeFile(filePath3,JSON.stringify(marketing,null,2),(err)=>{
+        });       
+
+      } catch (error) {
+        console.error('Error parsing JSON data: ', error);
+      }
+    });
+
+}
     
 
 });
