@@ -3,7 +3,8 @@ const fs = require('fs');
 const bcrypt = require('bcrypt');
 const path = require('path');
 const bodyParser = require('body-parser')
-const session = require("express-session")
+const session = require("express-session");
+const { connect } = require('http2');
 const app = express();
 app.use(express.static('public'));
 app.listen(3000);
@@ -19,7 +20,7 @@ app.get('/:pageName.html', (req, res) => {
 
 app.use(session({
     secret: 'code',
-    resave: true,
+    resave: false,
     saveUninitialized: true,
  }));
 
@@ -203,11 +204,10 @@ app.get('/nekretnine',function(req,res){
 });
 
 app.post('/marketing/nekretnine',function(req,res){
+
+    const {nizNekretnina} = req.body;
+
     if(req.session.username){
-
-      const {nizNekretnina} = req.body;
-
-      req.session.niz_nekretnina = nizNekretnina
 
       fs.readFile(filePath3, 'utf8', (err, data) => {
         if (err) {
@@ -220,20 +220,23 @@ app.post('/marketing/nekretnine',function(req,res){
           const user_marketing =  marketing.find(x => x.username == req.session.username).marketing
           
           for(id in nizNekretnina){
-              const nekretnina = user_marketing.find(x => x.nekretnina_id == id)
+              const nekretnina = user_marketing.find(x => x.id == id)
               if(nekretnina)
                 nekretnina.pretrage+=1           
           }
           
           fs.writeFile(filePath3,JSON.stringify(marketing,null,2),(err)=>{
-          });       
+          });                
+          req.session.nekretnine = nizNekretnina
+          res.status(200).json()
 
         } catch (error) {
           console.error('Error parsing JSON data: ', error);
         }
       });
-
+      
   }
+
 });
 
 app.post('/marketing/nekretnina/:id',function(req,res){
@@ -251,13 +254,15 @@ app.post('/marketing/nekretnina/:id',function(req,res){
 
         const user_marketing =  marketing.find(x => x.username == req.session.username).marketing
         
-        const nekretnina = user_marketing.find(x => x.nekretnina_id == id)
+        const nekretnina = user_marketing.find(x => x.id == id)
 
         if(nekretnina)
           nekretnina.klikovi+=1           
         
         fs.writeFile(filePath3,JSON.stringify(marketing,null,2),(err)=>{
         });       
+
+        res.status(200).json()
 
       } catch (error) {
         console.error('Error parsing JSON data: ', error);
@@ -270,11 +275,12 @@ app.post('/marketing/nekretnina/:id',function(req,res){
 });
 app.post('/marketing/osvjezi',function(req,res){
   if(req.session.username){
-
+      
     var {nizNekretnina} = req.body;
 
-    if(req.session.niz_nekretnina)
-      nizNekretnina = req.session.niz_nekretnina
+    if(Object.keys(req.body).length == 0){
+      nizNekretnina = req.session.nekretnine
+    }
 
     fs.readFile(filePath3, 'utf8', (err, data) => {
       if (err) {
@@ -282,24 +288,20 @@ app.post('/marketing/osvjezi',function(req,res){
         return;
       }   
       try {
+
         const marketing = JSON.parse(data)
 
         const user_marketing =  marketing.find(x => x.username == req.session.username).marketing
-        
-        for(id in nizNekretnina){
-            const nekretnina = user_marketing.find(x => x.nekretnina_id == id)
-            if(nekretnina)
-              nekretnina.pretrage+=1           
-        }
-        
-        fs.writeFile(filePath3,JSON.stringify(marketing,null,2),(err)=>{
-        });       
 
+        const osvjezi = {
+          nizNekretnina : user_marketing.filter(item => nizNekretnina.includes(item.id))
+        }
+
+        res.status(200).json(osvjezi)
       } catch (error) {
         console.error('Error parsing JSON data: ', error);
-      }
+      } 
     });
-
-}
+  }
 
 });

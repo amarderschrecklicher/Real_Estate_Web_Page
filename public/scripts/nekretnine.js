@@ -12,7 +12,7 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
     for(let nekretnina of nekretnine){
      string += " <div id='kartica-"+nekretnina.id+"'> <img src= '../images/apartments.jpg' alt='Appartment'> <br> <p class='lijevo'><strong>Naziv:</strong> "+ nekretnina.naziv +"</p>" +
      "<p class='lijevo'><strong>Kvadratura:</strong> "+ nekretnina.kvadratura +" m2</p>" +
-     "<p class='desno'><strong>Cijena:</strong> "+ nekretnina.cijena +" KM</p><button id='detalji-"+nekretnina.id+"'onclick='povecajKarticu("+nekretnina.id+")'>Detalji</button>" +
+     "<p class='desno'><strong>Cijena:</strong> "+ nekretnina.cijena +" KM</p><button id='detalji-"+nekretnina.id+"'onclick='povecajKarticu("+nekretnina.id+","+container+")'>Detalji</button>" +
      "<div id='pretrage-"+nekretnina.id+"'><p class='lijevo'><strong>Pretrage: </strong><span id='br_pretraga' class='label'>"+
      "32</span></p></div><div id='klikovi-"+nekretnina.id+"'>"+
      "<p class='lijevo'><strong>Klikovi: </strong><span id='br_klikova' class='label'>23</span></p></div></div>"
@@ -67,16 +67,29 @@ spojiNekretnine(divPp, nekretnine, "Poslovni prostor");
 }
 
 var povecana_kartica = 0
-
-function povecajKarticu(id){
-    var kartica = document
-
-    if(povecana_kartica!=0){
-        kartica = document.getElementById("kartica-" + povecana_kartica)
-        kartica.style.width = ""
+var grid = ""
+function povecajKarticu(id,tip){
+    const gridContainer = document.querySelector('.grid-container');
+    if(gridContainer.id!="Stan"){
+        grid.
     }
+    const divs = gridContainer.querySelectorAll('div');
 
-    kartica = document.getElementById("kartica-" + id)
-    kartica.style.width = "500px"
-    povecana_kartica = id
+  if(grid!="" && tip.id!=grid)
+  document.querySelector(grid).style.gridTemplateColumns = 'repeat(auto-fill, 300px)';
+
+  divs.forEach(div => {
+    if (div === document.getElementById("kartica-"+id)) {
+      if (div.style.width === '500px') {
+        div.style.width = '300px'; // If already expanded, shrink it
+        gridContainer.style.gridTemplateColumns = 'repeat(auto-fill, 300px)';
+      } else {
+        div.style.width = '500px'; // Expand the clicked div
+        gridContainer.style.gridTemplateColumns = 'repeat(auto-fill, minmax(300px, 500px))';
+      }
+    } else {
+      div.style.width = '300px'; // Reset other divs to default width
+    }
+  });
+  grid = tip.id
 }

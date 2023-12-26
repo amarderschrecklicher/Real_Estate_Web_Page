@@ -3,17 +3,17 @@
     "username": "username1",
     "marketing": [
       {
-        "nekretnina_id": 1,
+        "id": 1,
         "klikovi": 1,
-        "pretrage": 9
+        "pretrage": 55
       },
       {
-        "nekretnina_id": 2,
+        "id": 2,
         "klikovi": 1,
         "pretrage": 1
       },
       {
-        "nekretnina_id": 3,
+        "id": 3,
         "klikovi": 5,
         "pretrage": 1
       }
@@ -23,17 +23,17 @@
     "username": "username2",
     "marketing": [
       {
-        "nekretnina_id": 1,
+        "id": 1,
         "klikovi": 2,
         "pretrage": 2
       },
       {
-        "nekretnina_id": 2,
+        "id": 2,
         "klikovi": 2,
         "pretrage": 2
       },
       {
-        "nekretnina_id": 3,
+        "id": 3,
         "klikovi": 2,
         "pretrage": 2
       }
