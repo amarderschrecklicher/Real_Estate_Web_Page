@@ -219,6 +219,7 @@ app.post('/marketing/nekretnine',function(req,res){
 
           const user_marketing =  marketing.find(x => x.username == req.session.username).marketing
           
+          
           for(id in nizNekretnina){
               const nekretnina = user_marketing.find(x => x.id == id)
               if(nekretnina)
