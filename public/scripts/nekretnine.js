@@ -14,8 +14,8 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
      "<p class='lijevo'><strong>Kvadratura:</strong> "+ nekretnina.kvadratura +" m2</p>" +
      "<p class='desno'><strong>Cijena:</strong> "+ nekretnina.cijena +" KM</p><button id='detalji-"+nekretnina.id+"'onclick='povecajKarticu("+nekretnina.id+","+container+")'>Detalji</button>" +
      "<div id='pretrage-"+nekretnina.id+"'><p class='lijevo'><strong>Pretrage: </strong><span id='br_pretraga' class='label'>"+
-     "32</span></p></div><div id='klikovi-"+nekretnina.id+"'>"+
-     "<p class='lijevo'><strong>Klikovi: </strong><span id='br_klikova' class='label'>23</span></p></div></div>"
+     "</span></p></div><div id='klikovi-"+nekretnina.id+"'>"+
+     "<p class='lijevo'><strong>Klikovi: </strong><span id='br_klikova' class='label'></span></p></div></div>"
    
     }
     string +="</div>"
@@ -67,7 +67,6 @@ spojiNekretnine(divPp, nekretnine, "Poslovni prostor");
 }
 
 var povecana_kartica = 0
-var grid = ""
 function povecajKarticu(id,tip){
   const kartica = document.getElementById("kartica-" + id);
   

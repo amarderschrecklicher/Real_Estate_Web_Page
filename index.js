@@ -263,6 +263,7 @@ app.post('/marketing/nekretnina/:id',function(req,res){
         fs.writeFile(filePath3,JSON.stringify(marketing,null,2),(err)=>{
         });       
 
+        req.session.nekretnine = id
         res.status(200).json()
 
       } catch (error) {
