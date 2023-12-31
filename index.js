@@ -268,7 +268,7 @@ app.post('/marketing/nekretnina/:id',function(req,res){
 
         const user_marketing =  marketing.find(x => x.username == req.session.username).marketing
         
-        const nekretnina = user_marketing.find(x => x.id == idd)
+        var nekretnina = user_marketing.find(x => x.id == idd)
 
         if(!nekretnina){
           const novo = {
