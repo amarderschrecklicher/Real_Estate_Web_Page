@@ -27,90 +27,209 @@
   },
   {
     "id": 2,
-    "tip_nekretnine": "Poslovni prostor",
-    "naziv": "Mali poslovni prostor",
-    "kvadratura": 20,
-    "cijena": 70000,
-    "tip_grijanja": "struja",
+    "tip_nekretnine": "Stan",
+    "naziv": "Elegantan stan u centru",
+    "kvadratura": 75,
+    "cijena": 300000,
+    "tip_grijanja": "centralno",
     "lokacija": "Centar",
-    "godina_izgradnje": 2005,
-    "datum_objave": "20.08.2023.",
-    "opis": "Magnis dis parturient montes.",
+    "godina_izgradnje": 2020,
+    "datum_objave": "03.10.2023.",
+    "opis": "Aenean commodo ligula eget dolor.",
+    "upiti": [
+      {
+        "korisnik_id": 1,
+        "tekst_upita": "Vestibulum ante ipsum primis."
+      },
+      {
+        "korisnik_id": 2,
+        "tekst_upita": "Aenean massa."
+      },
+      {
+        "korisnik_id": 1,
+        "tekst_upita": "Nunc tincidunt ante vitae massa."
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "tip_nekretnine": "Stan",
+    "naziv": "Prostran stan na Dobrinji",
+    "kvadratura": 90,
+    "cijena": 350000,
+    "tip_grijanja": "centralno",
+    "lokacija": "Dobrinja",
+    "godina_izgradnje": 2018,
+    "datum_objave": "05.10.2023.",
+    "opis": "Pellentesque eu pretium quis.",
     "upiti": [
       {
         "korisnik_id": 2,
-        "tekst_upita": "Integer tincidunt."
+        "tekst_upita": "Etiam ultricies nisi vel augue."
+      },
+      {
+        "korisnik_id": 1,
+        "tekst_upita": "Duis aute irure dolor."
+      },
+      {
+        "korisnik_id": 2,
+        "tekst_upita": "Quisque rutrum."
       }
     ]
-  },{
-    "id": 3,
-    "tip_nekretnine": "Kuća",
-    "naziv": "Mala Kuća",
-    "kvadratura": 88,
-    "cijena": 232000,
-    "tip_grijanja": "plin",
-    "lokacija": "Novo Sarajevo",
-    "godina_izgradnje": 2019,
-    "datum_objave": "01.10.2023.",
-    "opis": "Sociis natoque penatibus.",
-    "upiti": [{
-        "korisnik_id": 1,
-        "tekst_upita": "Nullam eu pede mollis pretium."
-    },
-    {
-        "korisnik_id": 2,
-        "tekst_upita": "Phasellus viverra nulla."
-    }]
-},
-{
+  }
+ , {
   "id": 4,
-  "tip_nekretnine": "Stan",
-  "naziv": "Namješten stan Sarajevo",
-  "kvadratura": 88,
-  "cijena": 700000,
-  "tip_grijanja": "plin",
-  "lokacija": "Novo Sarajevo",
-  "godina_izgradnje": 2022,
-  "datum_objave": "01.10.2023.",
-  "opis": "Sociis natoque penatibus.",
+  "tip_nekretnine": "Poslovni prostor",
+  "naziv": "Moderni uredi u Sarajevu",
+  "kvadratura": 150,
+  "cijena": 400000,
+  "tip_grijanja": "klima",
+  "lokacija": "Marijin Dvor",
+  "godina_izgradnje": 2021,
+  "datum_objave": "07.10.2023.",
+  "opis": "Suspendisse potenti.",
   "upiti": [
     {
+      "korisnik_id": 2,
+      "tekst_upita": "Curabitur arcu erat."
+    },
+    {
       "korisnik_id": 1,
-      "tekst_upita": "Nullam eu pede mollis pretium."
+      "tekst_upita": "Vivamus suscipit tortor."
     },
     {
       "korisnik_id": 2,
-      "tekst_upita": "Phasellus viverra nulla."
-    },
-    {
-      "korisnik_id": 1,
-      "tekst_upita": "novi upit"
+      "tekst_upita": "Mauris blandit aliquet elit."
     }
   ]
 },
 {
   "id": 5,
-  "tip_nekretnine": "Stan",
-  "naziv": "Namješten stan Sarajevo",
-  "kvadratura": 88,
-  "cijena": 700000,
-  "tip_grijanja": "plin",
-  "lokacija": "Novo Sarajevo",
-  "godina_izgradnje": 2022,
-  "datum_objave": "01.10.2023.",
-  "opis": "Sociis natoque penatibus.",
+  "tip_nekretnine": "Poslovni prostor",
+  "naziv": "Prostor za kafić",
+  "kvadratura": 80,
+  "cijena": 280000,
+  "tip_grijanja": "klima",
+  "lokacija": "Ilidža",
+  "godina_izgradnje": 2020,
+  "datum_objave": "09.10.2023.",
+  "opis": "Donec sollicitudin molestie malesuada.",
   "upiti": [
     {
       "korisnik_id": 1,
-      "tekst_upita": "Nullam eu pede mollis pretium."
+      "tekst_upita": "Pellentesque in ipsum id."
     },
     {
       "korisnik_id": 2,
-      "tekst_upita": "Phasellus viverra nulla."
+      "tekst_upita": "Nulla porttitor accumsan tincidunt."
     },
     {
       "korisnik_id": 1,
-      "tekst_upita": "novi upit"
+      "tekst_upita": "Proin eget tortor risus."
     }
   ]
-}]
+},
+{
+  "id": 6,
+  "tip_nekretnine": "Poslovni prostor",
+  "naziv": "Veliki skladišni prostor",
+  "kvadratura": 500,
+  "cijena": 600000,
+  "tip_grijanja": "nema",
+  "lokacija": "Vogošća",
+  "godina_izgradnje": 2015,
+  "datum_objave": "11.10.2023.",
+  "opis": "Lorem ipsum dolor sit amet.",
+  "upiti": [
+    {
+      "korisnik_id": 1,
+      "tekst_upita": "Vestibulum ac diam sit amet."
+    },
+    {
+      "korisnik_id": 2,
+      "tekst_upita": "Nulla quis lorem ut libero malesuada."
+    },
+    {
+      "korisnik_id": 1,
+      "tekst_upita": "Sed porttitor lectus nibh."
+    }
+  ]
+},{
+  "id": 7,
+  "tip_nekretnine": "Kuća",
+  "naziv": "Luksuzna vila",
+  "kvadratura": 350,
+  "cijena": 850000,
+  "tip_grijanja": "centralno",
+  "lokacija": "Bjelašnica",
+  "godina_izgradnje": 2018,
+  "datum_objave": "15.10.2023.",
+  "opis": "Fusce vel metus volutpat.",
+  "upiti": [
+    {
+      "korisnik_id": 2,
+      "tekst_upita": "Aenean sollicitudin."
+    },
+    {
+      "korisnik_id": 1,
+      "tekst_upita": "Curabitur non nulla."
+    },
+    {
+      "korisnik_id": 2,
+      "tekst_upita": "Praesent sapien massa."
+    }
+  ]
+},
+{
+  "id": 8,
+  "tip_nekretnine": "Kuća",
+  "naziv": "Porodična kuća sa bazenom",
+  "kvadratura": 280,
+  "cijena": 500000,
+  "tip_grijanja": "toplana",
+  "lokacija": "Ilidža",
+  "godina_izgradnje": 2015,
+  "datum_objave": "19.10.2023.",
+  "opis": "Quisque velit nisi.",
+  "upiti": [
+    {
+      "korisnik_id": 1,
+      "tekst_upita": "Nulla quis lorem ut libero malesuada."
+    },
+    {
+      "korisnik_id": 2,
+      "tekst_upita": "Vivamus suscipit tortor eget felis porttitor."
+    },
+    {
+      "korisnik_id": 1,
+      "tekst_upita": "Mauris blandit aliquet elit."
+    }
+  ]
+},
+{
+  "id": 9,
+  "tip_nekretnine": "Kuća",
+  "naziv": "Vikendica na planini",
+  "kvadratura": 180,
+  "cijena": 280000,
+  "tip_grijanja": "kamin",
+  "lokacija": "Trebević",
+  "godina_izgradnje": 2010,
+  "datum_objave": "25.10.2023.",
+  "opis": "Vivamus magna justo.",
+  "upiti": [
+    {
+      "korisnik_id": 2,
+      "tekst_upita": "Nulla quis lorem ut libero malesuada."
+    },
+    {
+      "korisnik_id": 1,
+      "tekst_upita": "Vivamus suscipit tortor eget felis porttitor."
+    },
+    {
+      "korisnik_id": 2,
+      "tekst_upita": "Curabitur non nulla."
+    }
+  ]
+}
+]

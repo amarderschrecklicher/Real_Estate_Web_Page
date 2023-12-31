@@ -10,22 +10,23 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
 
     string += "<h3>"+tip_nekretnine+"</h3><div id='"+ container +"' class='grid-container'>"
     for(let nekretnina of nekretnine){
-     string += " <div id='kartica-"+nekretnina.id+"'> <img src= '../images/apartments.jpg' alt='Appartment'> <br> <p class='lijevo'><strong>Naziv:</strong> "+ nekretnina.naziv +"</p>" +
+     string += " <div id='kartica-"+nekretnina.id+"' tag='kartica'> <img src= '../images/apartments.jpg' alt='Appartment'> <br> <p class='lijevo'><strong>Naziv:</strong> "+ nekretnina.naziv +"</p>" +
      "<p class='lijevo'><strong>Kvadratura:</strong> "+ nekretnina.kvadratura +" m2</p>" +
-     "<p class='desno'><strong>Cijena:</strong> "+ nekretnina.cijena +" KM</p><button id='detalji-"+nekretnina.id+"'onclick='povecajKarticu("+nekretnina.id+","+container+")'>Detalji</button>" +
-     "<div id='pretrage-"+nekretnina.id+"'><p class='lijevo'><strong>Pretrage: </strong><span id='br_pretraga' class='label'>"+
+     "<p class='desno'><strong>Cijena:</strong> "+ nekretnina.cijena +" KM</p><button id='detalji-"+nekretnina.id+"'onclick='povecajKarticu("+nekretnina.id+")'>Detalji</button>" +
+     "<div id='pretrage-"+nekretnina.id+"'><p class='lijevo'><strong>Pretrage: </strong><span id='br_pretraga' class='label' style='display: none;'>"+
      "</span></p></div><div id='klikovi-"+nekretnina.id+"'>"+
-     "<p class='lijevo'><strong>Klikovi: </strong><span id='br_klikova' class='label'></span></p></div></div>"
+     "<p class='lijevo'><strong>Klikovi: </strong><span id='br_klikova' class='label' style='display: none;'></span></p></div></div>"
    
     }
     string +="</div>"
 
-    divReferenca.innerHTML = string  
+    divReferenca.innerHTML = string
 }
 
 const divStan = document.getElementById("stan");
 const divKuca = document.getElementById("kuca");
 const divPp = document.getElementById("pp");
+const divNekretnine = document.getElementById("nekretnine");
 const min_cijena = document.getElementById("min_cijena")
 const max_cijena = document.getElementById("max_cijena")
 const min_kvadrati = document.getElementById("min_kvadrati")
@@ -34,6 +35,12 @@ const detalji = document.getElementById("detalji")
 var filter = false
 
 PoziviAjax.getNekretnine(fillNekretnine)
+
+setInterval(osvjeziNekretnine, 500);
+
+function osvjeziNekretnine(){
+  MarketingAjax.osvjeziKlikove(divNekretnine)
+}
 
 function filterNekretnine(){
     filter = true
@@ -55,8 +62,9 @@ if(filter){
         max_kvadratura:max_kvadrati.value,
         min_kvadratura:min_kvadrati.value
     }
-    filter = false
-    nekretnine.filtrirajNekretnine(kriterij)
+   var novo = nekretnine.filtrirajNekretnine(kriterij)
+   if(!kriterij.max_cijena && !kriterij.min_cijena && !kriterij.max_kvadratura && !kriterij.min_kvadratura)
+      novo = 0
 }
 
 //pozivanje funkcije
@@ -64,10 +72,16 @@ spojiNekretnine(divStan, nekretnine, "Stan");
 spojiNekretnine(divKuca, nekretnine, "Kuća");
 spojiNekretnine(divPp, nekretnine, "Poslovni prostor");
 
+if(filter && novo!=0){
+  MarketingAjax.novoFiltriranje(novo)
+}
+
+filter = false
+
 }
 
 var povecana_kartica = 0
-function povecajKarticu(id,tip){
+function povecajKarticu(id){
   const kartica = document.getElementById("kartica-" + id);
   
   if (povecana_kartica) {
@@ -76,4 +90,5 @@ function povecajKarticu(id,tip){
 
   kartica.classList.add("large-item");
   povecana_kartica = kartica;
+  MarketingAjax.klikNekretnina(id)
 }
