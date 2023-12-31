@@ -55,6 +55,7 @@ if(error) throw error
 let nekretnine = SpisakNekretnina();
 nekretnine.init(data,null);
 
+var novo = 0
 if(filter){
     const kriterij = {
         max_cijena:max_cijena.value,
@@ -62,11 +63,15 @@ if(filter){
         max_kvadratura:max_kvadrati.value,
         min_kvadratura:min_kvadrati.value
     }
-   var novo = nekretnine.filtrirajNekretnine(kriterij)
+
+    novo = nekretnine.filtrirajNekretnine(kriterij)
    if(!kriterij.max_cijena && !kriterij.min_cijena && !kriterij.max_kvadratura && !kriterij.min_kvadratura)
       novo = 0
 }
 
+ if(novo!=0){
+  nekretnine.init(novo,null);
+}
 //pozivanje funkcije
 spojiNekretnine(divStan, nekretnine, "Stan");
 spojiNekretnine(divKuca, nekretnine, "Kuća");

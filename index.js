@@ -248,6 +248,8 @@ app.post('/marketing/nekretnine',function(req,res){
         }
       });        
   }
+  else
+  res.status(401).end()
  
 });
 
@@ -290,8 +292,9 @@ app.post('/marketing/nekretnina/:id',function(req,res){
         console.error('Error parsing JSON data: ', error);
       }
     });
-
-}
+  }
+  else
+  res.status(401).end()
 });
 app.post('/marketing/osvjezi',function(req,res){
   if(req.session.username){
@@ -325,5 +328,6 @@ app.post('/marketing/osvjezi',function(req,res){
       } 
     });
   }
-
+  else
+  res.status(401).end()
 });

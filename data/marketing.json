@@ -4,48 +4,48 @@
     "marketing": [
       {
         "id": 1,
-        "klikovi": 6,
-        "pretrage": 22
+        "klikovi": 7,
+        "pretrage": 26
       },
       {
         "id": 5,
         "klikovi": 3,
-        "pretrage": 3
+        "pretrage": 7
       },
       {
         "id": 7,
         "klikovi": 5,
-        "pretrage": 25
+        "pretrage": 32
       },
       {
         "id": 2,
-        "klikovi": 13,
-        "pretrage": 18
+        "klikovi": 14,
+        "pretrage": 24
       },
       {
         "id": 3,
         "klikovi": 4,
-        "pretrage": 19
+        "pretrage": 25
       },
       {
         "id": 4,
         "klikovi": 5,
-        "pretrage": 21
+        "pretrage": 28
       },
       {
         "id": 6,
-        "klikovi": 2,
-        "pretrage": 24
+        "klikovi": 3,
+        "pretrage": 31
       },
       {
         "id": 8,
-        "klikovi": 4,
-        "pretrage": 22
+        "klikovi": 6,
+        "pretrage": 29
       },
       {
         "id": 9,
         "klikovi": 1,
-        "pretrage": 3
+        "pretrage": 8
       }
     ]
   },

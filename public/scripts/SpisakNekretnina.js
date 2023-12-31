@@ -26,10 +26,7 @@ let SpisakNekretnina = function () {
         if(nekretnine.length!=0 && kriterij.max_kvadratura)
             nekretnine = nekretnine.filter(nek => nek.kvadratura <= kriterij.max_kvadratura)
         if(nekretnine.length!=0 && kriterij.min_kvadratura)
-            nekretnine = nekretnine.filter(nek => nek.kvadratura >= kriterij.min_kvadratura)
-        
-        if(!kriterij.tip_nekretnine)
-        listaNekretnina = nekretnine
+            nekretnine = nekretnine.filter(nek => nek.kvadratura >= kriterij.min_kvadratura)  
 
         return nekretnine
     }
