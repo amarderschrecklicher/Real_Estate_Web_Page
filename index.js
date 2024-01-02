@@ -209,7 +209,7 @@ app.post('/marketing/nekretnine',function(req,res){
     const {nizNekretnina} = req.body;
 
     console.log(nizNekretnina)
-    if(req.session.username){
+
       fs.readFile(filePath3, 'utf8',async (err, data) => {
         if (err) {
           console.error(err);
@@ -217,17 +217,16 @@ app.post('/marketing/nekretnine',function(req,res){
         }   
         try {
           const marketing = JSON.parse(data);
-          const user_marketing = marketing.find(x => x.username == req.session.username).marketing;
           
           nizNekretnina.forEach(idd => {
-            var nekretnina = user_marketing.find(x => x.id == idd);
+            var nekretnina = marketing.find(x => x.id == idd);
             if (!nekretnina) { 
-              user_marketing.push({
+                marketing.push({
                 id: parseInt(idd, 10),
                 klikovi: 0,
                 pretrage: 0
               });
-              nekretnina = user_marketing.find(x => x.id == idd);
+              nekretnina = marketing.find(x => x.id == idd);
             }
             
             nekretnina.pretrage += 1;
@@ -247,14 +246,10 @@ app.post('/marketing/nekretnine',function(req,res){
           console.error('Error parsing JSON data: ', error);
         }
       });        
-  }
-  else
-  res.status(401).end()
  
 });
 
 app.post('/marketing/nekretnina/:id',function(req,res){
-  if(req.session.username){
 
     const idd = req.params.id;
 
@@ -265,10 +260,8 @@ app.post('/marketing/nekretnina/:id',function(req,res){
       }   
       try {
         const marketing = JSON.parse(data)
-
-        const user_marketing =  marketing.find(x => x.username == req.session.username).marketing
         
-        var nekretnina = user_marketing.find(x => x.id == idd)
+        var nekretnina = marketing.find(x => x.id == idd)
 
         if(!nekretnina){
           const novo = {
@@ -276,8 +269,8 @@ app.post('/marketing/nekretnina/:id',function(req,res){
             klikovi: 0,
             pretrage:0
           }
-          user_marketing.push(novo)
-          nekretnina = user_marketing.find(x => x.id == idd)
+          marketing.push(novo)
+          nekretnina = marketing.find(x => x.id == idd)
         }
           nekretnina.klikovi+=1           
         
@@ -292,12 +285,10 @@ app.post('/marketing/nekretnina/:id',function(req,res){
         console.error('Error parsing JSON data: ', error);
       }
     });
-  }
-  else
-  res.status(401).end()
+  
 });
+
 app.post('/marketing/osvjezi',function(req,res){
-  if(req.session.username){
       
     var {nizNekretnina} = req.body;
 
@@ -316,10 +307,8 @@ app.post('/marketing/osvjezi',function(req,res){
 
         const marketing = JSON.parse(data)
 
-        const user_marketing =  marketing.find(x => x.username == req.session.username).marketing
-
         const osvjezi = {
-          nizNekretnina : user_marketing.filter(item => nizNekretnina.includes(item.id))
+          nizNekretnina : marketing.filter(item => nizNekretnina.includes(item.id))
         }
 
         res.status(200).json(osvjezi)
@@ -327,7 +316,5 @@ app.post('/marketing/osvjezi',function(req,res){
         console.error('Error parsing JSON data: ', error);
       } 
     });
-  }
-  else
-  res.status(401).end()
+
 });

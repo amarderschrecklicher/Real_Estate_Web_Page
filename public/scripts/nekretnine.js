@@ -55,7 +55,7 @@ if(error) throw error
 let nekretnine = SpisakNekretnina();
 nekretnine.init(data,null);
 
-var novo = 0
+var novo = nekretnine.filtrirajNekretnine(null)
 if(filter){
     const kriterij = {
         max_cijena:max_cijena.value,
@@ -65,21 +65,16 @@ if(filter){
     }
 
     novo = nekretnine.filtrirajNekretnine(kriterij)
-   if(!kriterij.max_cijena && !kriterij.min_cijena && !kriterij.max_kvadratura && !kriterij.min_kvadratura)
-      novo = 0
 }
 
- if(novo!=0){
-  nekretnine.init(novo,null);
-}
+
+nekretnine.init(novo,null);
 //pozivanje funkcije
 spojiNekretnine(divStan, nekretnine, "Stan");
 spojiNekretnine(divKuca, nekretnine, "Kuća");
 spojiNekretnine(divPp, nekretnine, "Poslovni prostor");
 
-if(filter && novo!=0){
   MarketingAjax.novoFiltriranje(novo)
-}
 
 filter = false
 

@@ -1,72 +1,47 @@
 [
   {
-    "username": "username1",
-    "marketing": [
-      {
-        "id": 2,
-        "klikovi": 1,
-        "pretrage": 1
-      },
-      {
-        "id": 3,
-        "klikovi": 2,
-        "pretrage": 1
-      },
-      {
-        "id": 4,
-        "klikovi": 1,
-        "pretrage": 1
-      },
-      {
-        "id": 6,
-        "klikovi": 0,
-        "pretrage": 1
-      },
-      {
-        "id": 7,
-        "klikovi": 2,
-        "pretrage": 1
-      },
-      {
-        "id": 8,
-        "klikovi": 7,
-        "pretrage": 1
-      },
-      {
-        "id": 5,
-        "klikovi": 2,
-        "pretrage": 0
-      },
-      {
-        "id": 9,
-        "klikovi": 4,
-        "pretrage": 0
-      },
-      {
-        "id": 1,
-        "klikovi": 1,
-        "pretrage": 0
-      }
-    ]
+    "id": 2,
+    "klikovi": 2,
+    "pretrage": 12
   },
   {
-    "username": "username2",
-    "marketing": [
-      {
-        "id": 1,
-        "klikovi": 2,
-        "pretrage": 2
-      },
-      {
-        "id": 2,
-        "klikovi": 2,
-        "pretrage": 2
-      },
-      {
-        "id": 3,
-        "klikovi": 2,
-        "pretrage": 2
-      }
-    ]
+    "id": 3,
+    "klikovi": 3,
+    "pretrage": 12
+  },
+  {
+    "id": 4,
+    "klikovi": 1,
+    "pretrage": 12
+  },
+  {
+    "id": 6,
+    "klikovi": 1,
+    "pretrage": 13
+  },
+  {
+    "id": 7,
+    "klikovi": 2,
+    "pretrage": 13
+  },
+  {
+    "id": 8,
+    "klikovi": 8,
+    "pretrage": 12
+  },
+  {
+    "id": 5,
+    "klikovi": 3,
+    "pretrage": 12
+  },
+  {
+    "id": 9,
+    "klikovi": 4,
+    "pretrage": 11
+  },
+  {
+    "id": 1,
+    "klikovi": 2,
+    "pretrage": 11
   }
 ]
