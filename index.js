@@ -196,6 +196,7 @@ app.get('/nekretnine',function(req,res){
       try {
         const nekretnine = JSON.parse(data);
         req.session.nekretnine = nekretnine.map(x=>x.id)
+        req.session.osvjezi = ""
         res.status(200).json(nekretnine)
       } catch (error) {
         console.error('Error parsing JSON data: ', error);
@@ -207,7 +208,7 @@ app.get('/nekretnine',function(req,res){
 app.post('/marketing/nekretnine',function(req,res){
 
     const {nizNekretnina} = req.body;
-
+    console.log("pretraga")
     console.log(nizNekretnina)
 
       fs.readFile(filePath3, 'utf8',async (err, data) => {
@@ -272,13 +273,12 @@ app.post('/marketing/nekretnina/:id',function(req,res){
           marketing.push(novo)
           nekretnina = marketing.find(x => x.id == idd)
         }
-          nekretnina.klikovi+=1           
+        nekretnina.klikovi+=1           
         
         fs.writeFile(filePath3,JSON.stringify(marketing,null,2),(err)=>{
         });       
 
         req.session.nekretnine = [parseInt(idd,10)]
-        console.log(req.session.nekretnine)
         res.status(200).json()
 
       } catch (error) {
@@ -291,11 +291,7 @@ app.post('/marketing/nekretnina/:id',function(req,res){
 app.post('/marketing/osvjezi',function(req,res){
       
     var {nizNekretnina} = req.body;
-
-    if(Object.keys(req.body).length == 0){
-      nizNekretnina = req.session.nekretnine
-    }
-
+    console.log("poslao")
     console.log(req.body)
 
     fs.readFile(filePath3, 'utf8', (err, data) => {
@@ -307,11 +303,28 @@ app.post('/marketing/osvjezi',function(req,res){
 
         const marketing = JSON.parse(data)
 
+        if(Object.keys(req.body).length == 0){
+          nizNekretnina = req.session.osvjezi
+        }
+        else{
+            req.session.osvjezi = req.session.nekretnine
+        }
+
         const osvjezi = {
           nizNekretnina : marketing.filter(item => nizNekretnina.includes(item.id))
         }
 
-        res.status(200).json(osvjezi)
+        if(req.session.nekretnine == ""){
+          console.log("nista")
+          res.status(200).json()
+        }
+        else{
+          req.session.nekretnine = ""
+          console.log("vratio")
+          console.log(osvjezi)
+          res.status(200).json(osvjezi)
+        }
+
       } catch (error) {
         console.error('Error parsing JSON data: ', error);
       } 

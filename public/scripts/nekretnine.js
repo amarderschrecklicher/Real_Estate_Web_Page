@@ -21,6 +21,7 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
     string +="</div>"
 
     divReferenca.innerHTML = string
+    
 }
 
 const divStan = document.getElementById("stan");
@@ -33,14 +34,11 @@ const min_kvadrati = document.getElementById("min_kvadrati")
 const max_kvadrati = document.getElementById("max_kvadrati")
 const detalji = document.getElementById("detalji")
 var filter = false
+var first = true
 
 PoziviAjax.getNekretnine(fillNekretnine)
+MarketingAjax.osvjeziKlikove(divNekretnine)
 
-setInterval(osvjeziNekretnine, 500);
-
-function osvjeziNekretnine(){
-  MarketingAjax.osvjeziKlikove(divNekretnine)
-}
 
 function filterNekretnine(){
     filter = true
@@ -74,7 +72,12 @@ spojiNekretnine(divStan, nekretnine, "Stan");
 spojiNekretnine(divKuca, nekretnine, "Kuća");
 spojiNekretnine(divPp, nekretnine, "Poslovni prostor");
 
-  MarketingAjax.novoFiltriranje(novo)
+MarketingAjax.novoFiltriranje(novo)
+
+if(first){
+  MarketingAjax.osvjeziKlikove(divNekretnine)
+  first = false
+}
 
 filter = false
 

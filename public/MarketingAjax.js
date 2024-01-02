@@ -1,6 +1,21 @@
 const MarketingAjax = (() => {
 
-    var  lista_osvjezi = 0
+    var parametar = ""
+    let initialExecution = true;
+    const interval = setInterval(() => {
+        osvjeziKlikove(parametar);
+        
+        // Clear the interval if it's not the initial execution
+        if (!initialExecution) {
+          clearInterval(interval);
+          setInterval(() => osvjeziKlikove(parametar), 500);
+        }
+      }, 500);
+
+    var lista_osvjezi = 0
+    var list = {
+        nizNekretnina:[]
+    }
     const divs = ["#Stan","#Kuća","#Poslovni_prostor"]
 
     function osvjeziPretrage(divNekretnine){
@@ -25,54 +40,30 @@ const MarketingAjax = (() => {
             })
             
         })
-
     }
 
     function osvjeziKlikove(divNekretnine){
         const ajax = new XMLHttpRequest();
+
         ajax.onreadystatechange = function(){
             if (ajax.readyState == 4 && ajax.status == 200){
                 lista_osvjezi = JSON.parse(ajax.responseText)
+                parametar = divNekretnine
+                initialExecution = false;
                 osvjeziPretrage(divNekretnine)
             }            
-            else if (ajax.readyState == 4){
-                
+            else if (ajax.readyState == 4){     
             };
         }
-
-        var list = {
-            nizNekretnina:[]
-        }
-
-        divs.forEach(tip => {
-
-            var div = divNekretnine.querySelector(tip).querySelectorAll('[tag="kartica"]');
-
-            div.forEach(element => {
-                list.nizNekretnina.push(parseInt(element.id.split('-')[1],10))
-            });
-        })
-        
 
         ajax.open('POST','/marketing/osvjezi');
         ajax.setRequestHeader('Content-Type', 'application/json');
 
-        var old = 0
-        if(lista_osvjezi!=0){
-           old = lista_osvjezi.nizNekretnina.map(x=>x.id)
-        }
-        var eqaul = true
-        if(old !=0){
-            list.nizNekretnina.forEach(id => {
-                if(old.find(x=> x == id)==[]){
-                    eqaul = false
-                    return
-                }
-            });
-        }
-
-        if(!eqaul)
+       
+        if(list.nizNekretnina != []){
             ajax.send(JSON.stringify(list));
+            list.nizNekretnina = []
+        }
         else
             ajax.send();
 
@@ -83,7 +74,7 @@ const MarketingAjax = (() => {
 
         console.log(listaFiltriranihNekretnina)
 
-        var list = {
+        list = {
         nizNekretnina:[]
         }
         listaFiltriranihNekretnina.forEach(nekretnina =>{
@@ -99,17 +90,27 @@ const MarketingAjax = (() => {
     function klikNekretnina(idNekretnine){
         const ajax = new XMLHttpRequest();
 
+        list = {
+        nizNekretnina:[]
+        }
+
+        ajax.onreadystatechange = function(){
+            if (ajax.readyState == 4 && ajax.status == 200){
+                list.nizNekretnina.push(idNekretnine)
+            }
+            else if (ajax.readyState == 4){     
+            };
+        }
+
         ajax.open('POST',`/marketing/nekretnina/${idNekretnine}`);
         ajax.send();
 
     }
 
-
-
     return {
         osvjeziPretrage: osvjeziPretrage,
         osvjeziKlikove: osvjeziKlikove,
         novoFiltriranje: novoFiltriranje,
-        klikNekretnina: klikNekretnina,
+        klikNekretnina: klikNekretnina
     };
 })();
