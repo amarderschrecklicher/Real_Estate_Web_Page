@@ -1,5 +1,6 @@
 const express = require('express');
 const fs = require('fs');
+const { promisify } = require('util');
 const bcrypt = require('bcrypt');
 const path = require('path');
 const bodyParser = require('body-parser')
@@ -216,7 +217,7 @@ app.post('/marketing/nekretnine',function(req,res){
           return;
         }   
         try {
-          const marketing = JSON.parse(data);
+          var marketing = JSON.parse(data);
           
           nizNekretnina.forEach(idd => {
             var nekretnina = marketing.find(x => x.id == idd);
@@ -227,21 +228,15 @@ app.post('/marketing/nekretnine',function(req,res){
                 pretrage: 0
               });
               nekretnina = marketing.find(x => x.id == idd);
-            }
-            
+            }           
             nekretnina.pretrage += 1;
-            req.session.nekretnine.push(nekretnina)
           });
-          req.session.osvjezi = req.session.nekretnine
-      
-        fs.writeFile(filePath3, JSON.stringify(marketing, null, 2), async (err) => {
-            if (err) {
-              console.error(err);
-              return;
-            }
-          }); 
+          req.session.nekretnine = marketing
+          console.log("pise")       
+          console.log(marketing) 
+          fs.writeFile(filePath3,JSON.stringify(marketing,null,2),(err)=>{})
+          console.log("gotovo pisanje")
 
-          
           res.status(200).json();
 
         } catch (error) {
@@ -256,13 +251,13 @@ app.post('/marketing/nekretnina/:id',function(req,res){
     const idd = req.params.id;
     req.session.nekretnine = []
 
-    fs.readFile(filePath3, 'utf8', (err, data) => {
+    fs.readFile(filePath3, 'utf8', async (err, data) => {
       if (err) {
         console.error(err);
         return;
       }   
       try {
-        const marketing = JSON.parse(data)
+        var marketing = JSON.parse(data)
         
         var nekretnina = marketing.find(x => x.id == idd)
 
@@ -279,10 +274,9 @@ app.post('/marketing/nekretnina/:id',function(req,res){
         nekretnina.klikovi+=1           
         req.session.nekretnine.push(nekretnina)
 
-
-        fs.writeFile(filePath3,JSON.stringify(marketing,null,2),(err)=>{
-        });       
-
+      console.log("pise")
+      fs.writeFile(filePath3,JSON.stringify(marketing,null,2),(err)=>{})       
+      console.log("gotovo pisanje")
 
         res.status(200).json()
 
@@ -294,11 +288,10 @@ app.post('/marketing/nekretnina/:id',function(req,res){
 });
 
 app.post('/marketing/osvjezi',function(req,res){
-      
+  if(req.session){
     var {nizNekretnina} = req.body;
     console.log("poslao")
     console.log(req.body)
-
     fs.readFile(filePath3, 'utf8', async (err, data) => {
       if (err) {
         console.error(err);
@@ -306,45 +299,20 @@ app.post('/marketing/osvjezi',function(req,res){
       }   
       try {
 
-       const marketing =  await JSON.parse(data)
-        console.log("prije")
-        console.log(req.session.osvjezi)
+       const mark =  await JSON.parse(data)
+       fs.readFile(filePath3, 'utf8', async (err, data) => {
 
         if(Object.keys(req.body).length == 0){
-          console.log(req.session.osvjezi)
-          if(req.session.osvjezi[0].id)
-            nizNekretnina = req.session.osvjezi.map(x=>x.id)
-          else
-          nizNekretnina = req.session.osvjezi
+          nizNekretnina = req.session.nekretnine
         }
-        else{
-            req.session.osvjezi = req.session.nekretnine
-        }
-        console.log("poslije")
-        console.log(req.session.nekretnine)
 
-        var osvjezi = {
+        const marketing = await JSON.parse(data)
+
+         var osvjezi = {
           nizNekretnina : marketing.filter(item => nizNekretnina.includes(item.id))
         }
 
-        if(req.session.nekretnine!=undefined)
-        osvjezi.nizNekretnina.forEach(element =>{
-
-          const found = req.session.osvjezi.find(x=>x.id == element.id)
-          
-          if(found && (found.pretrage!=element.pretrage || found.klikovi!=element.klikovi)){
-            req.session.nekretnine.push(element)
-            req.session.osvjezi = []
-          }
-
-        })
-
-        if(req.session.nekretnine!=undefined && req.session.osvjezi.length == 0){
-          osvjezi.nizNekretnina = req.session.nekretnine
-          req.session.osvjezi = req.session.nekretnine
-        }
-
-        if(req.session.nekretnine!=undefined && req.session.nekretnine.length == 0){
+        if(req.session.osvjezi != undefined && req.session.osvjezi.length != 0){
           console.log("nista")
           res.status(200).json()
         }
@@ -352,13 +320,15 @@ app.post('/marketing/osvjezi',function(req,res){
           req.session.nekretnine = []
           console.log("vratio")
           console.log(osvjezi)
-          req.session.osvjezi = osvjezi.nizNekretnina
+          req.session.osvjezi = req.session.nekretnine
           res.status(200).json(osvjezi)
         }
 
+      })
+        
       } catch (error) {
         console.error('Error parsing JSON data: ', error);
       } 
     });
-
+  }
 });

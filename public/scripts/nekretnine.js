@@ -62,7 +62,6 @@ if(filter){
 
     novo = nekretnine.filtrirajNekretnine(kriterij)
 }
-MarketingAjax.novoFiltriranje(novo)
 
 nekretnine.init(novo,null);
 
@@ -70,6 +69,8 @@ nekretnine.init(novo,null);
 spojiNekretnine(divStan, nekretnine, "Stan");
 spojiNekretnine(divKuca, nekretnine, "Kuća");
 spojiNekretnine(divPp, nekretnine, "Poslovni prostor");
+
+MarketingAjax.novoFiltriranje(novo)
 
 if(first){
   MarketingAjax.osvjeziKlikove(divNekretnine)
