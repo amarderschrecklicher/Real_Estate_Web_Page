@@ -1,47 +1,47 @@
 [
   {
     "id": 1,
-    "klikovi": 18,
-    "pretrage": 23
+    "klikovi": 6,
+    "pretrage": 28
   },
   {
     "id": 2,
-    "klikovi": 3,
-    "pretrage": 26
+    "klikovi": 9,
+    "pretrage": 28
   },
   {
     "id": 3,
-    "klikovi": 4,
-    "pretrage": 26
+    "klikovi": 1,
+    "pretrage": 28
   },
   {
     "id": 4,
     "klikovi": 0,
-    "pretrage": 26
+    "pretrage": 28
   },
   {
     "id": 5,
-    "klikovi": 1,
-    "pretrage": 23
+    "klikovi": 0,
+    "pretrage": 28
   },
   {
     "id": 6,
-    "klikovi": 1,
-    "pretrage": 26
+    "klikovi": 0,
+    "pretrage": 28
   },
   {
     "id": 7,
-    "klikovi": 1,
-    "pretrage": 26
+    "klikovi": 2,
+    "pretrage": 28
   },
   {
     "id": 8,
     "klikovi": 1,
-    "pretrage": 26
+    "pretrage": 28
   },
   {
     "id": 9,
-    "klikovi": 1,
-    "pretrage": 23
+    "klikovi": 0,
+    "pretrage": 28
   }
 ]

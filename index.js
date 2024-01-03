@@ -271,7 +271,9 @@ app.post('/marketing/nekretnina/:id',function(req,res){
           nekretnina = marketing.find(x => x.id == idd)
         }
         
-        nekretnina.klikovi+=1           
+        nekretnina.klikovi+=1    
+        req.session.osvjezi.nizNekretnina = []
+        req.session.osvjezi.nizNekretnina.push(nekretnina)       
         req.session.nekretnine.push(nekretnina)
 
       console.log("pise")
@@ -311,8 +313,27 @@ app.post('/marketing/osvjezi',function(req,res){
          var osvjezi = {
           nizNekretnina : marketing.filter(item => nizNekretnina.includes(item.id))
         }
+        console.log("sesija:")
+        console.log(req.session.osvjezi)
 
-        if(req.session.osvjezi != undefined && req.session.osvjezi.length != 0){
+        var salji = {
+          nizNekretnina : []
+        }
+        if(req.session.osvjezi!=undefined && Object.keys(req.body).length == 0)
+        marketing.forEach(element=>{
+          const found = req.session.osvjezi.nizNekretnina.find(x=>x.id == element.id)
+          if(found && (found.pretrage!=element.pretrage || found.klikovi!=element.klikovi)){
+            salji.nizNekretnina.push(element)
+          }
+        })
+
+        if(salji.nizNekretnina.length!=0){
+          console.log("vratio")
+          console.log(salji)
+          req.session.osvjezi = salji
+          res.status(200).json(salji)
+        }
+        else if(req.session.osvjezi != undefined && Object.keys(req.body).length == 0 && req.session.osvjezi.length != 0 ){
           console.log("nista")
           res.status(200).json()
         }
@@ -320,7 +341,7 @@ app.post('/marketing/osvjezi',function(req,res){
           req.session.nekretnine = []
           console.log("vratio")
           console.log(osvjezi)
-          req.session.osvjezi = req.session.nekretnine
+          req.session.osvjezi = osvjezi
           res.status(200).json(osvjezi)
         }
 
