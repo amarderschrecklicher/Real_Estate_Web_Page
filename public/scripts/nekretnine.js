@@ -36,9 +36,7 @@ const detalji = document.getElementById("detalji")
 var filter = false
 var first = true
 
-PoziviAjax.getNekretnine(fillNekretnine)
-MarketingAjax.osvjeziKlikove(divNekretnine)
-
+filterNekretnine()
 
 function filterNekretnine(){
     filter = true
@@ -64,15 +62,14 @@ if(filter){
 
     novo = nekretnine.filtrirajNekretnine(kriterij)
 }
-
+MarketingAjax.novoFiltriranje(novo)
 
 nekretnine.init(novo,null);
+
 //pozivanje funkcije
 spojiNekretnine(divStan, nekretnine, "Stan");
 spojiNekretnine(divKuca, nekretnine, "Kuća");
 spojiNekretnine(divPp, nekretnine, "Poslovni prostor");
-
-MarketingAjax.novoFiltriranje(novo)
 
 if(first){
   MarketingAjax.osvjeziKlikove(divNekretnine)

@@ -195,8 +195,6 @@ app.get('/nekretnine',function(req,res){
       }   
       try {
         const nekretnine = JSON.parse(data);
-        req.session.nekretnine = nekretnine.map(x=>x.id)
-        req.session.osvjezi = ""
         res.status(200).json(nekretnine)
       } catch (error) {
         console.error('Error parsing JSON data: ', error);
@@ -210,8 +208,9 @@ app.post('/marketing/nekretnine',function(req,res){
     const {nizNekretnina} = req.body;
     console.log("pretraga")
     console.log(nizNekretnina)
+    req.session.nekretnine = []
 
-      fs.readFile(filePath3, 'utf8',async (err, data) => {
+      fs.readFile(filePath3, 'utf8', async (err, data) => {
         if (err) {
           console.error(err);
           return;
@@ -231,7 +230,9 @@ app.post('/marketing/nekretnine',function(req,res){
             }
             
             nekretnina.pretrage += 1;
+            req.session.nekretnine.push(nekretnina)
           });
+          req.session.osvjezi = req.session.nekretnine
       
         fs.writeFile(filePath3, JSON.stringify(marketing, null, 2), async (err) => {
             if (err) {
@@ -240,7 +241,7 @@ app.post('/marketing/nekretnine',function(req,res){
             }
           }); 
 
-          req.session.nekretnine = nizNekretnina;
+          
           res.status(200).json();
 
         } catch (error) {
@@ -253,6 +254,7 @@ app.post('/marketing/nekretnine',function(req,res){
 app.post('/marketing/nekretnina/:id',function(req,res){
 
     const idd = req.params.id;
+    req.session.nekretnine = []
 
     fs.readFile(filePath3, 'utf8', (err, data) => {
       if (err) {
@@ -273,12 +275,15 @@ app.post('/marketing/nekretnina/:id',function(req,res){
           marketing.push(novo)
           nekretnina = marketing.find(x => x.id == idd)
         }
-        nekretnina.klikovi+=1           
         
+        nekretnina.klikovi+=1           
+        req.session.nekretnine.push(nekretnina)
+
+
         fs.writeFile(filePath3,JSON.stringify(marketing,null,2),(err)=>{
         });       
 
-        req.session.nekretnine = [parseInt(idd,10)]
+
         res.status(200).json()
 
       } catch (error) {
@@ -294,34 +299,60 @@ app.post('/marketing/osvjezi',function(req,res){
     console.log("poslao")
     console.log(req.body)
 
-    fs.readFile(filePath3, 'utf8', (err, data) => {
+    fs.readFile(filePath3, 'utf8', async (err, data) => {
       if (err) {
         console.error(err);
         return;
       }   
       try {
 
-        const marketing = JSON.parse(data)
+       const marketing =  await JSON.parse(data)
+        console.log("prije")
+        console.log(req.session.osvjezi)
 
         if(Object.keys(req.body).length == 0){
+          console.log(req.session.osvjezi)
+          if(req.session.osvjezi[0].id)
+            nizNekretnina = req.session.osvjezi.map(x=>x.id)
+          else
           nizNekretnina = req.session.osvjezi
         }
         else{
             req.session.osvjezi = req.session.nekretnine
         }
+        console.log("poslije")
+        console.log(req.session.nekretnine)
 
-        const osvjezi = {
+        var osvjezi = {
           nizNekretnina : marketing.filter(item => nizNekretnina.includes(item.id))
         }
 
-        if(req.session.nekretnine == ""){
+        if(req.session.nekretnine!=undefined)
+        osvjezi.nizNekretnina.forEach(element =>{
+
+          const found = req.session.osvjezi.find(x=>x.id == element.id)
+          
+          if(found && (found.pretrage!=element.pretrage || found.klikovi!=element.klikovi)){
+            req.session.nekretnine.push(element)
+            req.session.osvjezi = []
+          }
+
+        })
+
+        if(req.session.nekretnine!=undefined && req.session.osvjezi.length == 0){
+          osvjezi.nizNekretnina = req.session.nekretnine
+          req.session.osvjezi = req.session.nekretnine
+        }
+
+        if(req.session.nekretnine!=undefined && req.session.nekretnine.length == 0){
           console.log("nista")
           res.status(200).json()
         }
         else{
-          req.session.nekretnine = ""
+          req.session.nekretnine = []
           console.log("vratio")
           console.log(osvjezi)
+          req.session.osvjezi = osvjezi.nizNekretnina
           res.status(200).json(osvjezi)
         }
 

@@ -4,8 +4,6 @@ const MarketingAjax = (() => {
     let initialExecution = true;
     const interval = setInterval(() => {
         osvjeziKlikove(parametar);
-        
-        // Clear the interval if it's not the initial execution
         if (!initialExecution) {
           clearInterval(interval);
           setInterval(() => osvjeziKlikove(parametar), 500);
@@ -40,6 +38,8 @@ const MarketingAjax = (() => {
             })
             
         })
+        parametar = divNekretnine
+        initialExecution = false;
     }
 
     function osvjeziKlikove(divNekretnine){
@@ -48,8 +48,6 @@ const MarketingAjax = (() => {
         ajax.onreadystatechange = function(){
             if (ajax.readyState == 4 && ajax.status == 200){
                 lista_osvjezi = JSON.parse(ajax.responseText)
-                parametar = divNekretnine
-                initialExecution = false;
                 osvjeziPretrage(divNekretnine)
             }            
             else if (ajax.readyState == 4){     
@@ -59,24 +57,25 @@ const MarketingAjax = (() => {
         ajax.open('POST','/marketing/osvjezi');
         ajax.setRequestHeader('Content-Type', 'application/json');
 
-       
-        if(list.nizNekretnina != []){
+       console.log(list.nizNekretnina)
+        if(list.nizNekretnina.length != 0){
+            console.log("uso gore")
             ajax.send(JSON.stringify(list));
             list.nizNekretnina = []
         }
-        else
+        else{
+            console.log("uso dolje")
             ajax.send();
-
+        }
     }
 
     function novoFiltriranje(listaFiltriranihNekretnina){
         const ajax = new XMLHttpRequest();
 
-        console.log(listaFiltriranihNekretnina)
-
         list = {
         nizNekretnina:[]
         }
+
         listaFiltriranihNekretnina.forEach(nekretnina =>{
             list.nizNekretnina.push(nekretnina.id)
         })
@@ -93,14 +92,7 @@ const MarketingAjax = (() => {
         list = {
         nizNekretnina:[]
         }
-
-        ajax.onreadystatechange = function(){
-            if (ajax.readyState == 4 && ajax.status == 200){
-                list.nizNekretnina.push(idNekretnine)
-            }
-            else if (ajax.readyState == 4){     
-            };
-        }
+        list.nizNekretnina.push(idNekretnine)
 
         ajax.open('POST',`/marketing/nekretnina/${idNekretnine}`);
         ajax.send();
