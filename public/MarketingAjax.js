@@ -46,7 +46,6 @@ const MarketingAjax = (() => {
 
     function osvjeziKlikove(divNekretnine){
 
-        if(start == 1){
         const ajax = new XMLHttpRequest();
 
         ajax.onreadystatechange = function(){
@@ -97,7 +96,7 @@ const MarketingAjax = (() => {
             console.log("uso dolje")
             ajax.send();
         }
-        }
+        
     }
 
     function novoFiltriranje(listaFiltriranihNekretnina){
@@ -105,7 +104,7 @@ const MarketingAjax = (() => {
 
         ajax.onreadystatechange = function(){
             if (ajax.readyState == 4 && ajax.status == 200){
-                start = 1
+
             }            
             else if (ajax.readyState == 4){     
             };
