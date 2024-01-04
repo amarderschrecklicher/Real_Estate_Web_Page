@@ -10,8 +10,8 @@ const MarketingAjax = (() => {
         }
       }, 500);
 
-    var lista_osvjezi = 0
-    var list = {
+    const lista_osvjezi = []
+    const list = {
         nizNekretnina:[]
     }
     const divs = ["#Stan","#Kuća","#Poslovni_prostor"]
@@ -22,7 +22,7 @@ const MarketingAjax = (() => {
         console.log(lista_osvjezi)
         divs.forEach(tip => {
         
-        lista_osvjezi.nizNekretnina.forEach(nekretnina => {
+        lista_osvjezi.forEach(nekretnina => {
                 const kartica = divNekretnine.querySelector(tip).querySelector("#kartica-"+nekretnina.id)
                 if(kartica){
                     const br_pretrage = kartica.querySelector("#pretrage-"+nekretnina.id).querySelector("#br_pretraga")
@@ -51,7 +51,33 @@ const MarketingAjax = (() => {
 
         ajax.onreadystatechange = function(){
             if (ajax.readyState == 4 && ajax.status == 200){
-                lista_osvjezi = JSON.parse(ajax.responseText)
+                if(ajax.responseText!=""){
+                const newData = JSON.parse(ajax.responseText).nizNekretnina;
+                lista_osvjezi.length = 0    
+                newData.forEach(item => {
+                    const existingItemIndex = lista_osvjezi.findIndex(el => el.id === item.id);
+                    if (existingItemIndex !== -1) {
+                      // Update existing item
+                      lista_osvjezi[existingItemIndex] = item;
+                    } else {
+                      // Add new item if it doesn't exist
+                      lista_osvjezi.push(item);
+                    }
+                  });
+                  localStorage.setItem('myArray', JSON.stringify(lista_osvjezi));
+                }
+                else{
+                    const storedArrayString = localStorage.getItem('myArray');
+                    const retrievedArray = JSON.parse(storedArrayString);
+                    retrievedArray.forEach(item => {
+                        const existingItemIndex = lista_osvjezi.findIndex(el => el.id === item.id);
+                        if (existingItemIndex !== -1) {
+                          // Update existing item
+                          lista_osvjezi[existingItemIndex] = item;
+                        }
+                      });
+                }
+                
                 osvjeziPretrage(divNekretnine)
             }            
             else if (ajax.readyState == 4){     
@@ -65,7 +91,7 @@ const MarketingAjax = (() => {
         if(list.nizNekretnina.length != 0){
             console.log("uso gore")
             ajax.send(JSON.stringify(list));
-            list.nizNekretnina = []
+            list.nizNekretnina.length = 0
         }
         else{
             console.log("uso dolje")
@@ -85,12 +111,18 @@ const MarketingAjax = (() => {
             };
         }
 
-        list = {
-        nizNekretnina:[]
-        }
+        list.nizNekretnina.length = 0
+
 
         listaFiltriranihNekretnina.forEach(nekretnina =>{
-            list.nizNekretnina.push(nekretnina.id)
+            const existingItemIndex = list.nizNekretnina.findIndex(el => el.id === nekretnina.id);
+                    if (existingItemIndex !== -1) {
+                      // Update existing item
+                      list.nizNekretnina[existingItemIndex] = nekretnina.id;
+                    } else {
+                      // Add new item if it doesn't exist
+                      list.nizNekretnina.push(nekretnina.id);
+                    }
         })
 
         ajax.open('POST','/marketing/nekretnine');
@@ -103,16 +135,21 @@ const MarketingAjax = (() => {
 
         ajax.onreadystatechange = function(){
             if (ajax.readyState == 4 && ajax.status == 200){
-                lista_osvjezi = list
+                
             }            
             else if (ajax.readyState == 4){     
             };
         }
 
-        list = {
-        nizNekretnina:[]
-        }
-        list.nizNekretnina.push(idNekretnine)
+        list.nizNekretnina.length = 0
+        const existingItemIndex = list.nizNekretnina.findIndex(el => el.id === idNekretnine);
+                    if (existingItemIndex !== -1) {
+                      // Update existing item
+                      list.nizNekretnina[existingItemIndex] = idNekretnine;
+                    } else {
+                      // Add new item if it doesn't exist
+                      list.nizNekretnina.push(idNekretnine);
+                    }
 
         ajax.open('POST',`/marketing/nekretnina/${idNekretnine}`);
         ajax.send();
