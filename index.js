@@ -1,6 +1,5 @@
 const express = require('express');
 const fs = require('fs');
-const { promisify } = require('util');
 const bcrypt = require('bcrypt');
 const path = require('path');
 const bodyParser = require('body-parser')
@@ -189,13 +188,13 @@ app.put('/korisnik',function(req,res){
 
 app.get('/nekretnine',function(req,res){
     
-    fs.readFile(filePath2, 'utf8', (err, data) => {
+    fs.readFile(filePath2, 'utf8', async (err, data) => {
       if (err) {
         console.error(err);
         return;
       }   
       try {
-        const nekretnine = JSON.parse(data);
+        const nekretnine = await JSON.parse(data);
         res.status(200).json(nekretnine)
       } catch (error) {
         console.error('Error parsing JSON data: ', error);
@@ -217,7 +216,7 @@ app.post('/marketing/nekretnine',function(req,res){
           return;
         }   
         try {
-          var marketing = JSON.parse(data);
+          var marketing = await JSON.parse(data);
           
           nizNekretnina.forEach(idd => {
             var nekretnina = marketing.find(x => x.id == idd);
@@ -257,7 +256,7 @@ app.post('/marketing/nekretnina/:id',function(req,res){
         return;
       }   
       try {
-        var marketing = JSON.parse(data)
+        var marketing = await JSON.parse(data)
         
         var nekretnina = marketing.find(x => x.id == idd)
 
@@ -303,6 +302,11 @@ app.post('/marketing/osvjezi',function(req,res){
 
        const mark =  await JSON.parse(data)
        fs.readFile(filePath3, 'utf8', async (err, data) => {
+        if (err) {
+          console.error(err);
+          return;
+        }   
+        try {
 
         if(Object.keys(req.body).length == 0){
           nizNekretnina = req.session.nekretnine
@@ -344,6 +348,9 @@ app.post('/marketing/osvjezi',function(req,res){
           req.session.osvjezi = osvjezi
           res.status(200).json(osvjezi)
         }
+      } catch (error) {
+        console.error('Error parsing JSON data: ', error);
+      } 
 
       })
         
