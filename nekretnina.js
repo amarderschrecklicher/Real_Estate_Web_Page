@@ -13,6 +13,6 @@ module.exports = function (sequelize, DataTypes) {
        opis: Sequelize.STRING,
        broj_klikova: Sequelize.INTEGER,
        broj_pretraga: Sequelize.INTEGER
-    });
+    },{tableName: 'Nekretnina'});
     return Nekretnina;
 }

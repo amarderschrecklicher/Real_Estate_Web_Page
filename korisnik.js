@@ -6,6 +6,6 @@ module.exports = function(sequelize,DataTypes){
         prezime:Sequelize.STRING,
         username:Sequelize.STRING,
         password:Sequelize.STRING
-    });
+    },{tableName: 'Korisnik'});
     return Korisnici;
 };

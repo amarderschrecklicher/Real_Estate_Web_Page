@@ -5,10 +5,18 @@ const path = require('path');
 const bodyParser = require('body-parser')
 const session = require("express-session");
 const { connect } = require('http2');
-const db = require('./db.js')
 const app = express();
 app.use(express.static('public'));
 app.listen(3000);
+
+const db = require('./db.js');
+
+// Sync all models to the database
+db.sequelize.sync({ force: true }).then(() => {
+  console.log('Tables have been created!');
+}).catch((err) => {
+  console.error('Error creating tables:', err);
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
