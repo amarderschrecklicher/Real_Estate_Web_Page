@@ -5,6 +5,7 @@ const path = require('path');
 const bodyParser = require('body-parser')
 const session = require("express-session");
 const { connect } = require('http2');
+const db = require('./db.js')
 const app = express();
 app.use(express.static('public'));
 app.listen(3000);
