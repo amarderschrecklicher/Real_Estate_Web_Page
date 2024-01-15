@@ -15,7 +15,7 @@ db.nekretnina = require(__dirname+'/nekretnina.js')(sequelize);
 db.korisnik = require(__dirname+'/korisnik.js')(sequelize);
 db.upit = require(__dirname+'/upit.js')(sequelize);
 
-db.nekretnina.hasMany(db.upit,{as:'upitiNekretnine'});
-db.korisnik.hasMany(db.upit,{as:'upitKorisnika'})
+db.nekretnina.hasMany(db.upit,{as:'NekretninaId'});
+db.korisnik.hasMany(db.upit,{as:'KorisnikId'})
 
 module.exports=db;

@@ -9,7 +9,7 @@ html{
     margin-left: 1.5%;
     margin-right: 1.5%;
     align-items: stretch;
-    height: auto; /* or specify a fixed height for the container */
+    height: 600px; /* or specify a fixed height for the container */
     align-items: stretch;
 }
   .grid-container > div {
@@ -18,12 +18,15 @@ html{
     text-align: center;
     padding: 3%;
     transition: all 0.3s ease; /* Apply transition for smoother resizing */
-    height: 450px;
+    height: 500px;
   }
   .large-item {
     width: 500px; /* Applied to the enlarged element */
     grid-column-end: span 2; /* Make it span two columns */
     margin-left: 50px; /* Adjust margin to center the item */
+  }
+  .inline-div {
+    display: inline-block;
   }
 a{
     text-decoration: none;

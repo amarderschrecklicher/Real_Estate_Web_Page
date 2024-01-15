@@ -12,7 +12,8 @@ function spojiNekretnine(divReferenca, instancaModula, tip_nekretnine) {
     for(let nekretnina of nekretnine){
      string += " <div id='kartica-"+nekretnina.id+"' tag='kartica'> <img src= '../images/apartments.jpg' alt='Appartment'> <br> <p class='lijevo'><strong>Naziv:</strong> "+ nekretnina.naziv +"</p>" +
      "<p class='lijevo'><strong>Kvadratura:</strong> "+ nekretnina.kvadratura +" m2</p>" +
-     "<p class='desno'><strong>Cijena:</strong> "+ nekretnina.cijena +" KM</p><button id='detalji-"+nekretnina.id+"'onclick='povecajKarticu("+nekretnina.id+")'>Detalji</button>" +
+     "<p class='desno'><strong>Cijena:</strong> "+ nekretnina.cijena +" KM</p><p class='lijevo' style='display: none;'id='lokacija-"+nekretnina.id+"'><strong>Lokacija:</strong> "+ nekretnina.lokacija +"</p><p class='lijevo' style='display: none;'id='godina-"+nekretnina.id+"'><strong>Godina izgradnje:</strong> "+ nekretnina.godina_izgradnje+"</p>" 
+     +"<div><button id='detalji-"+nekretnina.id+"'onclick='povecajKarticu("+nekretnina.id+")'>Detalji</button></div>" +
      "<div id='pretrage-"+nekretnina.id+"'><p class='lijevo'><strong>Pretrage: </strong><span id='br_pretraga' class='label' style='display: none;'>"+
      "</span></p></div><div id='klikovi-"+nekretnina.id+"'>"+
      "<p class='lijevo'><strong>Klikovi: </strong><span id='br_klikova' class='label' style='display: none;'></span></p></div></div>"
@@ -82,14 +83,32 @@ filter = false
 }
 
 var povecana_kartica = 0
+var prije_id = 0
 function povecajKarticu(id){
+
+  if(document.getElementById("detalji-" + id).innerHTML == "Otvori detalje"){
+    window.location.href = `detalji.html?id=${id}`;
+  }
+
+
   const kartica = document.getElementById("kartica-" + id);
   
   if (povecana_kartica) {
     povecana_kartica.classList.remove("large-item");
+    document.getElementById("godina-" + prije_id).style.display = "none"
+    document.getElementById("lokacija-" + prije_id).style.display = "none"
+    document.getElementById("klikovi-" + prije_id).classList.remove("inline-div")
+    document.getElementById("pretrage-" + prije_id).classList.remove("inline-div")
+    document.getElementById("detalji-" + prije_id).innerHTML = "Detalji"
   }
-
+  
+  document.getElementById("godina-" + id).style.display = ""
+  document.getElementById("lokacija-" + id).style.display = ""
+  document.getElementById("klikovi-" + id).classList.add("inline-div")
+  document.getElementById("pretrage-" + id).classList.add("inline-div")
+  document.getElementById("detalji-" + id).innerHTML = "Otvori detalje"
   kartica.classList.add("large-item");
   povecana_kartica = kartica;
   MarketingAjax.klikNekretnina(id)
+  prije_id = id
 }
