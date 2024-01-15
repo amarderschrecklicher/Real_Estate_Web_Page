@@ -75,26 +75,40 @@ const filePath = path.join(__dirname, 'data', 'korisnici.json');
 const filePath2 = path.join(__dirname, 'data', 'nekretnine.json');
 const filePath3 = path.join(__dirname, 'data', 'marketing.json');
 
-app.get('/nekretnina/:id',function(req,res){
-  
-    const id = req.params.id;
+app.get('/nekretnina/:id',async function(req,res){
 
+      try {
+          let nekretnina = await db.nekretnina.findOne({ where: { id: req.params.id } });
+          if(nekretnina){
+          let upiti = await db.upit.findAll({where :{NekretninaId:req.params.id }})
+          for (let i = 0; i<upiti.length;i++){
+            let korisnik = await db.korisnik.findOne({where: {id: upiti[i].KorisnikId}})
+            upiti[i] = {
+                "username":korisnik ? korisnik.username:null,
+                "tekst_upita": upiti[i].tekst_upita
+            }
+          }
+          nekretnina = {...nekretnina.dataValues, "upiti":upiti}
+            res.status(200).json({nekretnina});
+        }
+          else
+            res.status(400).json({ greska: "Nekretnina sa id-em "+req.params.id+" ne postoji"});
+      }
+      catch (err) {
+          console.log(err);
+          res.status(400).json({ greska: "Zahtjev nije uspio"});
+      }
   
 });
 
-app.post('/login', function(req,res){
+app.post('/login', async function(req,res){
   const { username, password } = req.body;
-  fs.readFile(filePath, 'utf8',async (err, data) => {
-      if (err) {
-        console.error(err);
-        return;
-      }   
+
       try {
-        const korisnici = JSON.parse(data);        
-        var a = korisnici.find(korisnik => korisnik.username == username)
+        let korisnik = await db.korisnik.findOne({ where: { username: username } });
         var validPassword = false
-        if(a)
-        validPassword = await bcrypt.compare(password,a.password);
+        if(korisnik)
+        validPassword = await bcrypt.compare(password,korisnik.password);
           if(validPassword){
               req.session.username = username;
               res.status(200).json({poruka:"Uspješna prijava"})
@@ -103,9 +117,8 @@ app.post('/login', function(req,res){
               res.status(401).json({poruka:"Neuspješna prijava"})
           }
       } catch (error) {
-        console.error('Error parsing JSON data: ', error);
+        console.error('Greška: ', error);
       }
-    });
 });
 
 app.post('/logout', (req, res) => {
@@ -121,23 +134,16 @@ app.post('/logout', (req, res) => {
 });
 
 
-app.get('/korisnik',function(req,res){
+app.get('/korisnik',async function(req,res){
     
   if (req.session.username)
   {
-    fs.readFile(filePath, 'utf8', (err, data) => {
-      if (err) {
-        console.error(err);
-        return;
-      }   
       try {
-        const korisnici = JSON.parse(data);
-        var a = korisnici.find(korisnik => korisnik.username == req.session.username)
-        res.status(200).json(a)
+        let korisnik = await db.korisnik.findOne({ where: { username: req.session.username } });
+        res.status(200).json(korisnik)
       } catch (error) {
-        console.error('Error parsing JSON data: ', error);
+        console.error('Greška: ', error);
       }
-    });
     
   }
   else{

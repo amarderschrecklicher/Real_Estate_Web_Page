@@ -29,6 +29,7 @@ label{
 input{
     border-style: none;
     background-color: #fdf1d3;
+    width: 200px;
 }
 h3{
     margin-left: 8%;

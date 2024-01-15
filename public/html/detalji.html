@@ -2,7 +2,7 @@
 <HTML lang="en">
 <HEAD>
 <TITLE>Nekretnine</TITLE>
-<link rel="stylesheet" type="text/css" href="../css/nekretnine.css">
+<link rel="stylesheet" type="text/css" href="../css/detalji.css">
 <META http-equiv="Content-Type" content="text/html; charset=utf-8">
 </HEAD>
 <BODY>
@@ -15,11 +15,11 @@
     <div id="osnovno" class="osnovno">
         <img src="../images/apartments.jpg" class="center" alt="apartment"> 
         <br><br>
-        <label>Naziv: </label><input id="naziv" type="text" value="Useljiv stan Sarajevo" disabled>
+        <label>Naziv: </label><input id="naziv" type="text" value="" disabled>
         <br><br><br>
-        <label >Kvadratura: </label><input id="kvadratura" type="text" value="58 m2" disabled>
+        <label >Kvadratura: </label><input id="kvadratura" type="text" value="" disabled>
         <br><br><br>
-        <label >Cijena: </label><input id="cijena" type="text" value="232000 KM" disabled>
+        <label >Cijena: </label><input id="cijena" type="text" value="" disabled>
     </div>
     <br>
     <h3>DETALJI</h3>
@@ -34,17 +34,19 @@
                 <th><p><strong>Datum objave: </strong></p><input id="datum" type="text"  value="Useljiv stan Sarajevo" disabled></th>
             </tr>
             <tr>
-            <th colspan="2"><p><strong>Opis: </strong></p><p id="opis">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Inventore ad voluptates iusto, porro maxime suscipit voluptatum cupiditate provident, explicabo itaque accusamus ratione omnis debitis praesentium temporibus? Omnis dolorum ex excepturi?</p>
+            <th colspan="2"><p><strong>Opis: </strong></p><p id="opis"></p>
             </th>
         </tr>
     </table> 
     </div>
     <h3>UPITI</h3>
     <div id="upiti">
-        
+        <ul id="lista_upita">
+
+        </ul>
     </div>
 </BODY>
-<script src="../ajax.js" ></script>   
+<script src="../PoziviAjax.js" ></script>   
 <script src="../MarketingAjax.js" ></script>  
 <script src="../scripts/detalji.js" ></script>
 <script src="../scripts/nekretnine.js" ></script>
