@@ -223,119 +223,102 @@ app.get('/nekretnine',async function(req,res){
     
 });
 
-app.post('/marketing/nekretnine',function(req,res){
+app.post('/marketing/nekretnine',async function(req,res){
 
     const {nizNekretnina} = req.body;
     console.log("pretraga")
     console.log(nizNekretnina)
     req.session.nekretnine = []
-
-      fs.readFile(filePath3, 'utf8', async (err, data) => {
-        if (err) {
-          console.error(err);
-          return;
-        }   
+  
         try {
-          var marketing = await JSON.parse(data);
-          
-          nizNekretnina.forEach(idd => {
-            var nekretnina = marketing.find(x => x.id == idd);
-            if (!nekretnina) { 
-                marketing.push({
-                id: parseInt(idd, 10),
-                klikovi: 0,
-                pretrage: 0
-              });
-              nekretnina = marketing.find(x => x.id == idd);
-            }           
-            nekretnina.pretrage += 1;
+
+          const nekretninePromises = nizNekretnina.map(async idd => {
+            var nekretnina = await db.nekretnina.findOne({ where: { id: idd } });
+            var pretrage = nekretnina.broj_pretraga || 0;
+            nekretnina.broj_pretraga = pretrage + 1;
+            await nekretnina.save(); // Await the save operation
           });
-          req.session.nekretnine = marketing
-          console.log("pise")       
-          console.log(marketing) 
-          fs.writeFile(filePath3,JSON.stringify(marketing,null,2),(err)=>{})
-          console.log("gotovo pisanje")
+          
+          await Promise.all(nekretninePromises);
 
+          const marketing = await db.nekretnina.findAll({ where: { id: nizNekretnina } });  
+          const atributi = ['id','broj_klikova','broj_pretraga'];
+
+          req.session.nekretnine = marketing.map((item) => {
+            const newItem = {};
+            atributi.forEach((attr) => {
+              if(attr=='broj_pretraga')
+              newItem['pretrage'] = item[attr];
+            else if(attr=='broj_klikova')
+              newItem['klikovi'] = item[attr];
+            else
+              newItem[attr] = item[attr];
+            });
+            return newItem;
+          });
+          
+          console.log(req.session.nekretnine)
           res.status(200).json();
-
         } catch (error) {
-          console.error('Error parsing JSON data: ', error);
-        }
-      });        
+          console.error('Greška: ', error);
+          }       
  
 });
 
-app.post('/marketing/nekretnina/:id',function(req,res){
+app.post('/marketing/nekretnina/:id',async function(req,res){
 
     const idd = req.params.id;
     req.session.nekretnine = []
-
-    fs.readFile(filePath3, 'utf8', async (err, data) => {
-      if (err) {
-        console.error(err);
-        return;
-      }   
+   
       try {
-        var marketing = await JSON.parse(data)
-        
-        var nekretnina = marketing.find(x => x.id == idd)
-
-        if(!nekretnina){
-          const novo = {
-            id: parseInt(idd,10),
-            klikovi: 0,
-            pretrage:0
+        var nekretnina = await db.nekretnina.findOne({ where: { id: idd } });  
+        var klikovi = nekretnina.broj_klikova
+          if(!klikovi){
+            klikovi = 0
           }
-          marketing.push(novo)
-          nekretnina = marketing.find(x => x.id == idd)
-        }
-        
-        nekretnina.klikovi+=1    
-        req.session.osvjezi.nizNekretnina = []
-        req.session.osvjezi.nizNekretnina.push(nekretnina)       
-        req.session.nekretnine.push(nekretnina)
 
-      console.log("pise")
-      fs.writeFile(filePath3,JSON.stringify(marketing,null,2),(err)=>{})       
-      console.log("gotovo pisanje")
+          var klikovi = nekretnina.broj_klikova || 0;
+          nekretnina.broj_klikova = klikovi + 1;
+          await nekretnina.save(); // Await the save operation
 
-        res.status(200).json()
+          req.session.nekretnine.push({id:nekretnina.id,
+            broj_pretraga:nekretnina.broj_pretraga,broj_klikova:nekretnina.broj_klikova})
+          console.log(req.session.nekretnine)
+          res.status(200).json()
 
       } catch (error) {
         console.error('Error parsing JSON data: ', error);
       }
-    });
   
 });
 
-app.post('/marketing/osvjezi',function(req,res){
+app.post('/marketing/osvjezi',async function(req,res){
   if(req.session){
     var {nizNekretnina} = req.body;
     console.log("poslao")
     console.log(req.body)
-    fs.readFile(filePath3, 'utf8', async (err, data) => {
-      if (err) {
-        console.error(err);
-        return;
-      }   
-      try {
-
-       const mark =  await JSON.parse(data)
-       fs.readFile(filePath3, 'utf8', async (err, data) => {
-        if (err) {
-          console.error(err);
-          return;
-        }   
         try {
 
         if(Object.keys(req.body).length == 0){
-          nizNekretnina = req.session.nekretnine
+          nizNekretnina =  req.session.nekretnine.map(item => item.id)
         }
 
-        const marketing = await JSON.parse(data)
+        const marketing = await db.nekretnina.findAll({where : {id : nizNekretnina}});  
+        const atributi = ['id','broj_klikova','broj_pretraga'];
 
          var osvjezi = {
-          nizNekretnina : marketing.filter(item => nizNekretnina.includes(item.id))
+          nizNekretnina : marketing.map((item) => {
+            const newItem = {};
+            atributi.forEach((attr) => {
+              if(attr=='broj_pretraga')
+                newItem['pretrage'] = item[attr];
+              else if(attr=='broj_klikova')
+                newItem['klikovi'] = item[attr];
+              else
+                newItem[attr] = item[attr];
+            });
+            return newItem;
+          })
         }
         console.log("sesija:")
         console.log(req.session.osvjezi)
@@ -344,15 +327,16 @@ app.post('/marketing/osvjezi',function(req,res){
           nizNekretnina : []
         }
         if(req.session.osvjezi!=undefined && Object.keys(req.body).length == 0)
-        marketing.forEach(element=>{
+        {
+          osvjezi.nizNekretnina.forEach(element=>{
           const found = req.session.osvjezi.nizNekretnina.find(x=>x.id == element.id)
           if(found && (found.pretrage!=element.pretrage || found.klikovi!=element.klikovi)){
-            salji.nizNekretnina.push(element)
+            salji.nizNekretnina.push({id:element.id,klikovi:element.klikovi,pretrage:element.pretrage})
           }
-        })
-
+          })
+        }
         if(salji.nizNekretnina.length!=0){
-          console.log("vratio")
+          console.log("vratio2")
           console.log(salji)
           req.session.osvjezi = salji
           res.status(200).json(salji)
@@ -362,21 +346,14 @@ app.post('/marketing/osvjezi',function(req,res){
           res.status(200).json()
         }
         else{
-          req.session.nekretnine = []
-          console.log("vratio")
-          console.log(osvjezi)
           req.session.osvjezi = osvjezi
+          console.log("vratio1")
+          console.log(osvjezi)
           res.status(200).json(osvjezi)
         }
       } catch (error) {
         console.error('Error parsing JSON data: ', error);
       } 
-
-      })
         
-      } catch (error) {
-        console.error('Error parsing JSON data: ', error);
-      } 
-    });
   }
 });
