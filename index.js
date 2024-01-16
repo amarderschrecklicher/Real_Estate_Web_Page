@@ -110,7 +110,7 @@ app.post('/login', async function(req,res){
         if(korisnik)
         validPassword = await bcrypt.compare(password,korisnik.password);
           if(validPassword){
-              req.session.username = username;
+              req.session.user = korisnik;
               res.status(200).json({poruka:"Uspješna prijava"})
           }
           else {
@@ -122,7 +122,7 @@ app.post('/login', async function(req,res){
 });
 
 app.post('/logout', (req, res) => {
-  if (req.session.username) {
+  if (req.session.user) {
       req.session.destroy(err => {
           if (!err) {
             res.status(200).json({ poruka: 'Uspješno ste se odjavili' });
@@ -136,11 +136,10 @@ app.post('/logout', (req, res) => {
 
 app.get('/korisnik',async function(req,res){
     
-  if (req.session.username)
+  if (req.session.user)
   {
       try {
-        let korisnik = await db.korisnik.findOne({ where: { username: req.session.username } });
-        res.status(200).json(korisnik)
+        res.status(200).json(req.session.user)
       } catch (error) {
         console.error('Greška: ', error);
       }
@@ -152,46 +151,23 @@ app.get('/korisnik',async function(req,res){
 });
 
 
-app.post('/upit',function(req,res){
+app.post('/upit',async function(req,res){
     
-  if (req.session.username)
+  if (req.session.user)
   {
     const { nekretnina_id, tekst_upita } = req.body;
-
-    fs.readFile(filePath, 'utf8', (err, data) => {
-      if (err) {
-        console.error(err);
-        return;
-      }   
-      try {
-        const korisnici = JSON.parse(data);
-        var a = korisnici.find(korisnik => korisnik.username == req.session.username)
-        fs.readFile(filePath2, 'utf8', (err, data) => {
-          const nekretnine = JSON.parse(data);
-          var n = nekretnine.find(nekretnina => nekretnina.id == nekretnina_id)
-          if(n){
-            n.upiti.push({
-              korisnik_id : a.id,
-              tekst_upita : tekst_upita
-            })
-            fs.writeFile(filePath2,JSON.stringify(nekretnine,null,2),(err)=>{
-              if(err){
-                res.status(200).json("Error writting to file: ", err);
-              }
-              else{
-                res.status(200).json({ poruka: 'Upit je uspješno dodan' });
-              }
-            });          
-          }
-          else{
-            res.status(400).json({greska:"Nekretnina sa id-em "+nekretnina_id+" ne postoji"})
-          }
-        })
-      } catch (error) {
-        console.error('Error parsing JSON data: ', error);
+    try{
+            const new_upit = {tekst_upita: tekst_upita, NekretninaId: nekretnina_id, KorisnikId	: req.session.user.id};
+            db.sequelize.sync().then(async() => {
+              await db.upit.create(new_upit); 
+              res.status(200).json({poruka:"Upit je uspješno dodan"})
+            }).catch((err) => {
+              res.status(400).json({greska:"Nekretnina sa id-em "+nekretnina_id+" ne postoji"})
+            });
+                
+      }catch(error) {
+        console.error('Greška: ', error);
       }
-    });
-    
   }
   else{
     res.status(401).json({greska:"Neautorizovan pristup"})
@@ -200,44 +176,34 @@ app.post('/upit',function(req,res){
 
 app.put('/korisnik',function(req,res){
     
-  if (req.session.username)
+  if (req.session.user)
   {
     const { ime, prezime, username, password } = req.body;
-    fs.readFile(filePath, 'utf8', (err, data) => {
-      if (err) {
-        console.error(err);
-        return;
-      }   
+  
       try {
-        const korisnici = JSON.parse(data);
-        var a = korisnici.find(korisnik => korisnik.username == req.session.username)
         if(ime)
-          a.ime = ime
+          req.session.user.ime = ime
         if(prezime)
-          a.prezime = prezime
-        if(username){
-          a.username = username
-          req.session.username = username
-        }
+          req.session.user.prezime = prezime
+        if(username)
+          req.session.user.username = username
         if(password){
           bcrypt.hash(password, 10, function(err, hash) {
-            a.password = hash
+            req.session.user.password = hash
             });          
         }
 
-          fs.writeFile(filePath,JSON.stringify(korisnici,null,2),(err)=>{
-            if(err){
-              res.status(200).json("Error writting to file: ", err);
-            }
-            else{
-              res.status(200).json({ poruka: 'Podaci su uspješno ažurirani' });
-            }
-          });       
+        db.sequelize.sync().then(async() => {
+          await db.korisnik.update(req.session.user,{
+            where:{ id: req.session.user.id}
+          }); 
+          res.status(200).json({ poruka: 'Podaci su uspješno ažurirani' });
+        }).catch((err) => {
+        });
 
       } catch (error) {
-        console.error('Error parsing JSON data: ', error);
+        console.error('Greška: ', error);
       }
-    });
     
   }
   else{
@@ -246,20 +212,14 @@ app.put('/korisnik',function(req,res){
 });
 
 
-app.get('/nekretnine',function(req,res){
-    
-    fs.readFile(filePath2, 'utf8', async (err, data) => {
-      if (err) {
-        console.error(err);
-        return;
-      }   
+app.get('/nekretnine',async function(req,res){
+ 
       try {
-        const nekretnine = await JSON.parse(data);
+        let nekretnine = await db.nekretnina.findAll()
         res.status(200).json(nekretnine)
       } catch (error) {
         console.error('Error parsing JSON data: ', error);
       }
-    });
     
 });
 
